@@ -2,7 +2,7 @@ import secrets
 import os
 from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
-from wtform_fields import *
+from wtfform_field import*
 from models import db, User
 
 
