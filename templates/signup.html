@@ -4,7 +4,6 @@
     <meta charset="UTF-8"/>
     <title>Chatter_hub</title>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='script/script1.js') }}"></script>
 </head>
 <body>
     <header>Chatter_hub</header>
@@ -13,23 +12,23 @@
     <form id="registrationForm">
         <div>
             <label for="Username">Username</label>
-            <input type="text" id="Username" placeholder="Enter Username">
+            <input type="text" id="Username" placeholder="Enter Username" autocomplete="username">
             <ul id="usernameErrors" class="error-list"></ul>
         </div>
         <div>
             <label for="Password">Password</label>
-            <input type="password" id="password" placeholder="Enter your password">
+            <input type="password" id="password" placeholder="Enter your password" autocomplete="current-password">
             <ul id="passwordErrors" class="error-list"></ul>
         </div>
         <div>
             <label for="firm-pswrd">Confirm Password</label>
-            <input type="password" id="firm-pswrd" placeholder="Confirm your password">
+            <input type="password" id="firm-pswrd" placeholder="Confirm your password" autocomplete="new-password">
             <ul id="firmPswdErrors" class="error-list"></ul>
         </div>
         <div>
-            <button type="button" onclick="validateForm()">Create</button>
+            <button type="button">Create</button>
         </div>
     </form>
+    <script type="text/javascript" src="{{ url_for('static', filename='script/script1.js') }}"></script>
 </body>
 </html>
-

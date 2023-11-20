@@ -16,7 +16,7 @@ $(document).ready(function () {
     }
 
     // Example validation function
-    function validateForm() {
+    window.validateForm = function () {
         // Clear previous error messages
         clearErrorMessages();
 
@@ -34,7 +34,15 @@ $(document).ready(function () {
         if (passwordInput.val().trim() === '') {
             displayError('passwordErrors', 'Password cannot be empty.');
         }
-        // ... (rest of the validation logic)
 
-    }
+        // Example validation: Check if the passwords match
+        if (passwordInput.val() !== firmPswdInput.val()) {
+            displayError('firmPswdErrors', 'Passwords do not match.');
+        }
+    };
+
+    // Attach the validateForm function to the click event of the button
+    $('button').on('click', function () {
+        validateForm();
+    });
 });
