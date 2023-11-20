@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="utf-8">
+    <title>{% block title %}Register{% endblock %} - RChat</title>
+</head>
+<body>
+    <h2>Get started!</h2>
+
+    <form action="{{ url_for('index') }}" method="POST">
+        <div>
+            {{ form.username.label }}
+            {{ form.username(class_='form-control', placeholder='', autocomplete='off', autofocus=true) }}
+            <!-- Error messages -->
+            <ul>
+                {% for error in form.username.errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div>
+            {{ form.password.label }}
+            {{ form.password(class_='form-control', placeholder='') }}
+            <!-- Error messages -->
+            <ul>
+                {% for error in form.password.errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div>
+            {{ form.firm_pswd.label }}
+            {{ form.firm_pswd(class_='form-control', placeholder='') }}
+            <!-- Error messages -->
+            <ul>
+                {% for error in form.firm_pswd.errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div>
+            <input type="submit" value="Create" class="form-control">
+        </div>
+
+        {{ form.csrf_token }}
+    </form>
+</body>
+</html>

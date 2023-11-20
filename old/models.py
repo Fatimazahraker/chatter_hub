@@ -1,5 +1,3 @@
-#!usr/bin/python3
-""" model user"""
 from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
