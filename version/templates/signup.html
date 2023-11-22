@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Chatter_hub</title>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+</head>
+<body>
+    <header>Chatter_hub</header>
+    <h1>Get Started</h1>
+    <p>Welcome to Chatter_hub</p>
+    <form id="registrationForm" method="post">
+        <div>
+            <label for="Username">Username</label>
+            <input type="text" id="Username" name="Username" placeholder="Enter Username" autocomplete="username">
+            <ul id="usernameErrors" class="error-list"></ul>
+        </div>
+        <div>
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" placeholder="Enter your password" autocomplete="current-password">
+            <ul id="passwordErrors" class="error-list"></ul>
+        </div>
+        <div>
+            <label for="firm-pswrd">Confirm Password</label>
+            <input type="password" id="firm-pswrd"  name="firm-pswrd" placeholder="Confirm your password" autocomplete="new-password">
+            <ul id="firmPswdErrors" class="error-list"></ul>
+        </div>
+        <div>
+            <button type="submit">Create</button>
+        </div>
+        <div>
+            <input type="hidden" id="clientSideErrorsFlag" name="clientSideErrorsFlag" value="false">
+        </div>
+    </form>
+    <script type="text/javascript" src="{{ url_for('static', filename='script/script1.js') }}"></script>
+</body>
+</html>
