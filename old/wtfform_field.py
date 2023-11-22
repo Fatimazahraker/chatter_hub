@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField
-from wtforms.validators import InputRequired, Length, EqualTo, ValidationError
+from wtforms import StringField, PasswordField, SubmitField, BooleanField
+from wtforms.validators import InputRequired, Length, EqualTo, ValidationError, DataRequired
 
 from models import User
 
@@ -15,3 +15,10 @@ class RegistrationForm(FlaskForm):
         user_object = User.query.filter_by(username=username.data).first()
         if user_object:
             raise ValidationError("Username already exists. Select a different username.")
+
+class LoginForm(FlaskForm):
+
+    username = StringField('username', validators=[DataRequired()])
+    password = PasswordField('password', validators=[DataRequired()])
+    remember_me = BooleanField('remenber_me')
+    submit = SubmitField('login')
