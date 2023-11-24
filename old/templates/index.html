@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8">
     <title>{% block title %}Register{% endblock %} - RChat</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/stylereg.css') }}">
 </head>
 <body>
     <h2>Get started!</h2>
@@ -48,5 +49,6 @@
 
         {{ form.csrf_token }}
     </form>
+    <p>Already registered? <a href="{{ url_for('login') }}">Log in to your account</a></p>
 </body>
 </html>

@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8">
     <title>Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/stylelogin.css') }}">
 </head>
 <body>
     <h1>Sign In</h1>
@@ -18,6 +19,16 @@
         </p>
         <p>{{ form.remember_me() }} {{ form.remember_me.label }}</p>
         <p>{{ form.submit() }}</p>
+        <!-- Flash message placeholder -->
+        {% with messages = get_flashed_messages() %} 
+            {% if messages %}
+                <ul class="flashes">
+                    {% for message in messages %}
+                        <li>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
     </form>
 </body>
 </html>
