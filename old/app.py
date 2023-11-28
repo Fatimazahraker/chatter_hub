@@ -21,11 +21,6 @@ Modules:
 - models: Contains the User model for database interactions.
 - flask_socketio: Flask extension for Socket.IO, a real-time communication library.
 
-Environment Variables:
-- DB_USERNAME: Database username (default: 'default_username').
-- DB_PASSWORD: Database password (default: 'default_password').
-- DB_NAME: Database name (default: 'default_database').
-
 Routes:
 - /: Home page, handles user registration.
 - /login: Login page.
