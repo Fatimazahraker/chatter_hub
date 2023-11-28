@@ -1,81 +1,61 @@
-// script1.js
-
 $(document).ready(function () {
-    // Function to display error messages
-    var registrationSuccess = false;
+    console.error("Document ready");
+
     function displayError(errorElementId, errorMessage) {
         var errorList = $('#' + errorElementId);
-        errorList.empty(); // Clear previous error messages
-
-        // Append the new error message
+        errorList.empty();
         errorList.append('<li>' + errorMessage + '</li>');
     }
 
-    // Function to clear previous error messages
     function clearErrorMessages() {
-        $('.error-list').empty(); // Clear all error lists
+        $('.error-list').empty();
+        $('#clientSideErrorsFlag').val('false');
     }
 
-    // Example validation function
     window.validateForm = function () {
+        console.error("validateForm function called");
+
         // Clear previous error messages
         clearErrorMessages();
 
-        // Perform client-side validation
         var usernameInput = $('#Username');
         var passwordInput = $('#password');
         var firmPswdInput = $('#firm-pswrd');
 
-        // Example validation: Check if the username is not empty
         if (usernameInput.val().trim() === '') {
             displayError('usernameErrors', 'Username cannot be empty.');
-        }else {
-            // Example validation: Check if the username is between 4 and 25.
-            if (usernameInput.val().length < 4 || usernameInput.val().length > 25) {
-                displayError('usernameErrors', 'Username must be between 4 and 25 characters.');
-            }
+            console.error('Username validation error');
         }
 
-        // Example validation: Check if the password is not empty
         if (passwordInput.val().trim() === '') {
             displayError('passwordErrors', 'Password cannot be empty.');
-        }else {
-            // Example validation: Check if the password is between 4 and 25.
-            if (passwordInput.val().length < 4 || passwordInput.val().length > 25) {
-                displayError('passwordErrors', 'Password must be between 4 and 25 characters.');
-            }
+            console.error('Password validation error');
         }
 
-        // Example validation: Check if the passwords match
         if (passwordInput.val() !== firmPswdInput.val()) {
             displayError('firmPswdErrors', 'Passwords do not match.');
+            console.error('Passwords do not match validation error');
         }
-        registrationSuccess = true;
+
+        // Check if any validation errors occurred
+        var hasValidationErrors = $('.error-list').is(':empty');
+
+        // Set the flag based on the validation result
+        $('#clientSideErrorsFlag').val(hasValidationErrors ? 'false' : 'true');
+
+        // Return the validation result
+        return hasValidationErrors;
     };
 
-    // Attach the validateForm function to the click event of the button
-    $('#registrationForm button[type="button"]').on('click', function () {
-        validateForm();
-        // check the registrationSuccess flag
-        if (registrationSuccess) {
-            // Make an AJAX request to the Flask server to handle registration
-            $.ajax({
-                type: 'POST',
-                url: '/',
-                data: {
-                    username: $('#Username').val(),
-                    password: $('#password').val(),
-                    firm_password: $('#firm-pswrd').val()
-                },
-                success: function (response) {
-                    console.log('Registration success:', response);
-                    // You can handle the success response here
-                },
-                error: function (error) {
-                    console.error('Registration error:', error);
-                    // You can handle the error response here
-                }
-            });
+    $('#registrationForm').submit(function (event) {
+        console.error("Form submitted");
+
+        if (!validateForm()) {
+            console.error('Client-side errors flag is false. Proceeding with form submission.');
+        } else {
+            event.preventDefault(); // Prevent form submission if validation fails
+            console.error('Client-side errors flag is true. Preventing form submission.');
+            console.error("Form submission prevented");
         }
     });
 });

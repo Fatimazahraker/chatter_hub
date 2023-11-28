@@ -1,17 +1,23 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
+
 <head>
     <meta charset="utf-8">
     <title>{% block title %}Register{% endblock %} - RChat</title>
+    <!-- Link to the external stylesheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/stylereg.css') }}">
 </head>
+
 <body>
     <h2>Get started!</h2>
 
+    <!-- Registration Form -->
     <form action="{{ url_for('index') }}" method="POST">
+        <!-- Username Input -->
         <div>
             {{ form.username.label }}
             {{ form.username(class_='form-control', placeholder='', autocomplete='off', autofocus=true) }}
-            <!-- Error messages -->
+            <!-- Display username input errors -->
             <ul>
                 {% for error in form.username.errors %}
                     <li>{{ error }}</li>
@@ -19,10 +25,11 @@
             </ul>
         </div>
 
+        <!-- Password Input -->
         <div>
             {{ form.password.label }}
             {{ form.password(class_='form-control', placeholder='') }}
-            <!-- Error messages -->
+            <!-- Display password input errors -->
             <ul>
                 {% for error in form.password.errors %}
                     <li>{{ error }}</li>
@@ -30,23 +37,29 @@
             </ul>
         </div>
 
+        <!-- Confirm Password Input -->
         <div>
             {{ form.firm_pswd.label }}
             {{ form.firm_pswd(class_='form-control', placeholder='') }}
-            <!-- Error messages -->
+            <!-- Display confirm password input errors -->
             <ul>
                 {% for error in form.firm_pswd.errors %}
                     <li>{{ error }}</li>
                 {% endfor %}
-           
             </ul>
         </div>
 
+        <!-- Submit Button -->
         <div>
             <input type="submit" value="Create" class="form-control">
         </div>
 
+        <!-- CSRF Token for security -->
         {{ form.csrf_token }}
     </form>
+
+    <!-- Login Link for existing users -->
+    <p>Already registered? <a href="{{ url_for('login') }}">Log in to your account</a></p>
 </body>
+
 </html>

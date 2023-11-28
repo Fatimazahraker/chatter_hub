@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Chat Away - RChat</title>
+</head>
+
+<body>
+    <nav></nav>
+    <div id="main-section">
+        <!-- Sidebar Navigation -->
+        <nav id="sidebar">
+            <h4>ROOMS</h4>
+            {% for room in rooms %}
+                <!-- Room Selection Buttons -->
+                <p class="select-room"> {{ room|title }}</p>
+            {% endfor %}
+        </nav>
+
+        <!-- Main Chat Display Area -->
+        <div id="rightside-pannel">
+            <div id="display-message-section"></div>
+            <div id="input-area">
+                <!-- User Message Input -->
+                <input type="text" id="user_mssg" placeholder="Type here .." autocomplete="off">
+                <!-- Send Message Button -->
+                <button type="button" id="send_message">SEND</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Get username from the server -->
+    <script type="text/javascript">
+        const username = `{{ username }}`;
+    </script>
+
+    <!-- Load Chat Page Script -->
+    <script src="{{ url_for('static', filename='scripts/chat_page.js') }}"></script>
+    <!-- Include Socket.IO library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.1.2/socket.io.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <!-- Load Socket.IO Custom Script -->
+    <script src="{{ url_for('static', filename='scripts/socketio.js') }}"></script>
+</body>
+
+</html>

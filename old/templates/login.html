@@ -1,26 +1,43 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
+
 <head>
     <meta charset="utf-8">
     <title>Login</title>
+    <!-- Link to the external stylesheet for login styles -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/stylelogin.css') }}">
 </head>
+
 <body>
     <h1>Sign In</h1>
+
+    <!-- Login Form -->
     <form action="" method="post" novalidate>
+        <!-- Hidden fields for CSRF protection -->
         {{ form.hidden_tag() }}
+
+        <!-- Username Input -->
         <p>
             {{ form.username.label }}<br>
             {{ form.username(size=32) }}
         </p>
+
+        <!-- Password Input -->
         <p>
             {{ form.password.label }}<br>
             {{ form.password(size=32) }}
         </p>
+
+        <!-- Remember Me Checkbox -->
         <p>{{ form.remember_me() }} {{ form.remember_me.label }}</p>
+
+        <!-- Submit Button -->
         <p>{{ form.submit() }}</p>
+
         <!-- Flash message placeholder -->
         {% with messages = get_flashed_messages() %} 
             {% if messages %}
+                <!-- Display flashed messages -->
                 <ul class="flashes">
                     {% for message in messages %}
                         <li>{{ message }}</li>
@@ -30,4 +47,5 @@
         {% endwith %}
     </form>
 </body>
+
 </html>
