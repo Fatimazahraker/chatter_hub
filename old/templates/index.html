@@ -3,17 +3,31 @@
 
 <head>
     <meta charset="utf-8">
-    <title>{% block title %}Register{% endblock %} - RChat</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>register page</title>
     <!-- Link to the external stylesheet -->
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/stylereg.css') }}">
+    <!-- Link to Bootstrap CSS via CDN -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
-
 <body>
-    <h2>Get started!</h2>
+    <div class="main-section">
+        <div clases="jumbotron">
+            <h1 class="display-4">Chatter Hub</h1>
+            <p class="lead">Welcome to Chatter hub join us today!</p>
+        </div>
+
+    </div>
+    <div class="tilte-chat">
+        <h2>Join us</h2>
+        <p>Reqister to start using Chatter hub</p>
+    </div>
+    
 
     <!-- Registration Form -->
     <form action="{{ url_for('index') }}" method="POST">
         <!-- Username Input -->
+        <fieldset class="user-info">
         <div>
             {{ form.username.label }}
             {{ form.username(class_='form-control', placeholder='', autocomplete='off', autofocus=true) }}
@@ -48,6 +62,8 @@
                 {% endfor %}
             </ul>
         </div>
+        </fieldset>
+        <fieldset class="user-action">
 
         <!-- Submit Button -->
         <div>
@@ -56,10 +72,11 @@
 
         <!-- CSRF Token for security -->
         {{ form.csrf_token }}
+        </fieldset>
     </form>
 
     <!-- Login Link for existing users -->
-    <p>Already registered? <a href="{{ url_for('login') }}">Log in to your account</a></p>
+    <p>Already registered? <a href="{{ url_for('login') }}" class="purple-link">Log in to your account</a></p>
 </body>
 
 </html>

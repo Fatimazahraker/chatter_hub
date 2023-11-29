@@ -51,7 +51,11 @@ login_manager = LoginManager(app)
 def load_user(id):
     return User.query.get(int(id))
 
-@app.route("/", methods=['GET', 'POST'])
+@app.route('/')
+def home():
+    return render_template('main.html')
+
+@app.route("/index", methods=['GET', 'POST'])
 def index():
     """
     Handles the home page for user registration.

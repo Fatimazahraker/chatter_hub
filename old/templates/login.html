@@ -3,25 +3,37 @@
 
 <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Login</title>
     <!-- Link to the external stylesheet for login styles -->
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/stylelogin.css') }}">
+    <!-- Link to Bootstrap CSS via CDN -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
 
 <body>
-    <h1>Sign In</h1>
+    <div class="main-section">
+        <div clases="jumbotron">
+            <h1 class="display-4">Chatter Hub</h1>
+            <p class="lead">Welcome to Chatter hub join us today!</p>
+        </div>
+
+    </div>
+    <div class="tilte-chat">
+        <h2>Login now</h2>
+        <p>Enter your usename and password lo login</p>
+    </div>
 
     <!-- Login Form -->
     <form action="" method="post" novalidate>
         <!-- Hidden fields for CSRF protection -->
         {{ form.hidden_tag() }}
-
-        <!-- Username Input -->
+        <fieldset class="user-info">
+            <!-- Username Input -->
         <p>
             {{ form.username.label }}<br>
             {{ form.username(size=32) }}
         </p>
-
         <!-- Password Input -->
         <p>
             {{ form.password.label }}<br>
@@ -31,8 +43,11 @@
         <!-- Remember Me Checkbox -->
         <p>{{ form.remember_me() }} {{ form.remember_me.label }}</p>
 
-        <!-- Submit Button -->
-        <p>{{ form.submit() }}</p>
+        </fieldset>
+        <fieldset class="user-action">
+            <!-- Submit Button -->
+            <p>{{ form.submit() }}</p>
+        </fieldset>
 
         <!-- Flash message placeholder -->
         {% with messages = get_flashed_messages() %} 
@@ -46,6 +61,7 @@
             {% endif %}
         {% endwith %}
     </form>
+    <p>Not registered yet? Please registre <a href="{{ url_for('index') }}">HERE</a></p>
 </body>
 
 </html>

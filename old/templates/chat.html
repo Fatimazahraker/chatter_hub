@@ -4,12 +4,16 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Chat Away - RChat</title>
+    <title>Chatter-hub</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/stylechat.css') }}">
 </head>
 
 <body>
-    <nav></nav>
+    
     <div id="main-section">
+        <form action="{{ url_for('logout') }}" method="get">
+            <button type="submit">Logout</button>
+        </form>
         <!-- Sidebar Navigation -->
         <nav id="sidebar">
             <h4>ROOMS</h4>
@@ -44,7 +48,7 @@
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
         crossorigin="anonymous"></script>
     <!-- Load Socket.IO Custom Script -->
+    
     <script src="{{ url_for('static', filename='scripts/socketio.js') }}"></script>
 </body>
-
 </html>

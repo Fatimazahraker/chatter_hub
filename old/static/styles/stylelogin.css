@@ -1,73 +1,80 @@
-/* static/styles/stylelogin.css */
+/* stylelogin.css */
 
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    margin: 0;
-    padding: 0;
+    background-color: #f8f9fa; /* Light grayish background color */
+    margin: 0 20px;
 }
 
-h2 {
-    text-align: center;
-    color: #333;
-    margin-top: 30px; /* Adjust the margin as needed */
-}
-
-form {
-    width: 300px;
-    margin: 20px auto;
-    background-color: #fff;
+.main-section {
+    background-color: #800080; /* Purple background color for the jumbotron */
+    color: #fff; /* Text color for the jumbotron */
+    font-weight: bold;
     padding: 20px;
-    border-radius: 8px;
+    margin-top: 0px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-div {
-    margin-bottom: 15px;
-}
-
-input {
-    width: 100%;
-    padding: 10px;
-    box-sizing: border-box;
-    margin-top: 5px;
-}
-
-input[type="submit"] {
-    background-color: #27ae60;
-    color: #fff;
-    cursor: pointer;
-    width: 100%;
-    padding: 10px;
-    box-sizing: border-box;
-    border: none;
-    border-radius: 4px;
-}
-
-ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    color: red;
-}
-
-p {
-    text-align: center;
+/* Add these rules to style the "Login now" heading and paragraph */
+.tilte-chat h2, .tilte-chat p {
+    color: #800080; /* Purple color for headings and paragraphs */
     margin-top: 10px;
+    margin-left: 20px;
 }
 
-a {
-    color: #3498db;
-    text-decoration: none;
+/* Add these rules to style the form sections */
+.user-info, .user-action {
+    background-color: #fff; /* White background color for form sections */
+    padding: 20px;
+    margin-top: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-a:hover {
-    text-decoration: underline;
+/* Add these rules to style form labels */
+.user-info label,
+.user-action label {
+    color: #800080; /* Purple color for labels */
 }
 
-h1 {
-    text-align: center;
-    color: #333;
-    margin-top: 30px;
+.user-info input,
+.user-action input {
+    width: 100%; /* Make form inputs full-width */
+}
+/* Add these rules to style the submit button */
+form input.form-control[type="submit"] {
+    background-color: #800080; /* Purple color for the button */
+    color: #fff; /* Text color for the button */
+    font-size: 14px; /* Adjust the font size */
+    padding: 10px 20px; /* Adjust the padding to control the button size */
+    border: none; /* Remove the default button border */
+    cursor: pointer; /* Change the cursor to a pointer on hover */
+  
 }
 
+/* Add these rules to change the color on hover for the submit button */
+form input[type="submit"]:hover {
+    background-color: #660066; /* Darker purple on hover for the button */
+}
+
+/* Add these rules to style links */
+form a {
+    color: #800080; /* Purple color for the link */
+    margin-left: 20px; /* Add some left margin to links */
+}
+
+/* Add these rules to change the color on hover for links */
+form a:hover {
+    color: #660066; /* Darker purple on hover for the link */
+}
+
+/* Add these rules to style flashed messages */
+.flashes {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.flashes li {
+    color: #800080; /* Purple color for flashed messages */
+    margin-bottom: 10px;
+}

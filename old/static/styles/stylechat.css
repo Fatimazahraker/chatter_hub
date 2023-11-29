@@ -1,0 +1,69 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+    background-color: #fff; /* White background color */
+    color: #800080; /* Purple text color */
+}
+
+#main-section {
+    display: flex;
+}
+
+form {
+    margin-right: 20px;
+}
+
+button {
+    background-color: #800080; /* Purple button color */
+    color: #fff; /* White text color */
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+}
+
+#sidebar {
+    background-color: #800080; /* Purple background color for the sidebar */
+    color: #fff; /* White text color */
+    padding: 20px;
+    width: 150px;
+}
+
+h4 {
+    margin-bottom: 10px;
+}
+
+.select-room {
+    cursor: pointer;
+    margin-bottom: 5px;
+}
+
+#rightside-pannel {
+    flex-grow: 1;
+    padding: 20px;
+}
+
+#display-message-section {
+    border: 1px solid #800080; /* Purple border for the message section */
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+#input-area {
+    display: flex;
+}
+
+#user_mssg {
+    flex-grow: 1;
+    padding: 8px;
+    border: 1px solid #800080; /* Purple border for the input area */
+    margin-right: 10px;
+}
+
+#send_message {
+    background-color: #800080; /* Purple button color */
+    color: #fff; /* White text color */
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+}

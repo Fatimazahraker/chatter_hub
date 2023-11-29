@@ -44,22 +44,22 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelector('#user_mssg').value = '';
     }
 
-    // Handle room selection
+    // Select a room
     document.querySelectorAll('.select-room').forEach(p => {
         p.onclick = () => {
-            let newRoom = p.innerHTML;
-            if(newRoom == room) {
-                // Inform user if already in the selected room
+            let newRoom = p.innerHTML
+            // Check if user already in the room
+            if (newRoom === room) {
                 msg = `You are already in ${room} room.`;
                 printSysMsg(msg);
             } else {
-                // Leave current room and join the new one
                 leaveRoom(room);
                 joinRoom(newRoom);
                 room = newRoom;
             }
-        }
+        };
     });
+
 
     // Leave room
     function leaveRoom(room) {
