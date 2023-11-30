@@ -1,25 +1,48 @@
-/* stylereg.css */
-
 body {
-    background-color: #f8f9fa; /* Light grayish background color */
-    margin: 0 20px;
-
+    background-color: #E7D8EA;
+    margin:0 20px; 
+}
+h2 {
+    color: #d5a8de;
+    font-family: Inter;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: normal;
+    text-align: left;
+}
+form {
+    width: 750px;
+    height: 490px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #FFFFFF;
+    padding:30px;
+    display: inline-block;
+    text-align: right;
+    
 }
 
-.main-section {
-    background-color: #800080; /* Purple background color for the jumbotron */
-    color: #fff; /* Text color for the jumbotron */
-    font-weight: bold;
-    padding: 20px;
-    margin-top: 0px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+.purple-link {
+    color: #d5a8de;
+}
+#link-login {
+    text-align: left;
+    margin-top: 5px;
 }
 
-/* Add these rules to style the "Join us" heading and paragraph */
-.tilte-chat h2, .tilte-chat p {
-    color: #800080; /* Purple color for headings and paragraphs */
-    margin-top: 10px;
-    margin-left: 20px;
+.user-info, 
+.user-action {
+    border: none;
+}
+
+#container {
+            margin-top: 20vh;
+            margin-left: auto; /* Move the container to the right */
+            margin-right: 20px; /* Add some right margin for spacing */
+            text-align: center;
 }
 
 
@@ -27,52 +50,26 @@ body {
     background-color: #fff; /* White background color for form sections */
     padding: 20px;
     margin-top: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.0);
+    background: rgba(217, 217, 217, 0.40);
 }
 
 .user-info ul,
 .user-action ul {
     list-style: none; /* Remove default list styling for error messages */
-    padding: 0;
-    margin: 0;
 }
 
 .user-info label,
 .user-action label {
-    color: #800080; /* Purple color for labels */
-}
+    color: #d5a8de; /* Purple color for labels */
+    display:block; /* separate the label and the input */
+    text-align: left;
+    font-family: Inter;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    margin-bottom: 5px;
 
-.user-info input,
-.user-action input {
-    width: 100%; /* Make form inputs full-width */
 }
-/* Add this rule to make the "Create" button purple */
-form div input[type="submit"] {
-    background-color: #800080; /* Purple color for the button */
-    color: #fff; /* Text color for the button */
-    font-size: 14px; /* Adjust the font size */
-    padding: 10px 20px; /* Adjust the padding to control the button size */
-    border: none; /* Remove the default button border */
-    cursor: pointer; /* Change the cursor to a pointer on hover */
-}
-
-/* Add this rule to change the color on hover */
-form div input[type="submit"]:hover {
-    background-color: #660066; /* Darker purple on hover for the button */
-}
-
-/* Add this rule to make the login link purple */
-.purple-link {
-    color: #800080; /* Purmple color for the link */
-    
-}
-p {
-    margin-left: 20px;
-}
-
-/* Add this rule to change the color on hover */
-.purple-link:hover {
-    color: #660066; /* Darker purple on hover for the link */
-}
-
