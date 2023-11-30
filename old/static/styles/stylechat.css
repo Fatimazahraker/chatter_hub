@@ -1,69 +1,148 @@
-body {
-    margin: 0;
-    padding: 0;
-    font-family: 'Arial', sans-serif;
-    background-color: #fff; /* White background color */
-    color: #800080; /* Purple text color */
+.wrapper {
+    display: flex;
 }
 
 #main-section {
-    display: flex;
-}
-
-form {
-    margin-right: 20px;
-}
-
-button {
-    background-color: #800080; /* Purple button color */
-    color: #fff; /* White text color */
-    border: none;
-    padding: 10px 15px;
-    cursor: pointer;
+    overflow: hidden; /* Makee this div contain its floated children */
+    width: 100%;
 }
 
 #sidebar {
-    background-color: #800080; /* Purple background color for the sidebar */
-    color: #fff; /* White text color */
-    padding: 20px;
-    width: 150px;
+    margin-top: 2em;
+    float: left; /* Make this div as wide as its contents */
+    min-height: 96vh;
+    padding-left: 1em;
+    padding-top: 3em;
+    padding-right:1em;
+    border-right: 0.5px solid #E7D8EA;
 }
 
-h4 {
-    margin-bottom: 10px;
+#sidebar p {
+    padding-left: 2em;
+    padding-right:2em;
 }
 
-.select-room {
+#sidebar p:hover {
+    background-color:#487B98 ;
+}
+
+#sidebar h4 {padding-left: 0.5em;}
+
+
+#sidebar.view-sidebar {display: none;}
+
+#show-sidebar-button {
+    visibility: visible;
+    opacity: 0;
+    transition: visibility 0s, opacity 0.5s;
+    color: #335177;
+}
+
+@media (max-width: 2000px) {
+    #sidebar {
+        display: none;
+    }
+
+    #sidebar.view-sidebar {
+        display: block;
+    }
+
+    #show-sidebar-button {
+        visibility: visible;
+        opacity: 1;
+    }
+}
+
+
+.cursor-pointer {
     cursor: pointer;
-    margin-bottom: 5px;
 }
 
 #rightside-pannel {
-    flex-grow: 1;
-    padding: 20px;
+    overflow: hidden; /* Make this div take up the rest of the horizontal space, and no more */
 }
 
 #display-message-section {
-    border: 1px solid #800080; /* Purple border for the message section */
-    padding: 10px;
-    margin-bottom: 10px;
+    margin-top: 5em;
+    min-height: 82vh;
+    max-height: 82vh;
+    overflow-y: auto; /*Make  this section scrolable */
 }
 
 #input-area {
-    display: flex;
+    padding-left: 1em;
+    padding-right: 1em;
+    bottom: 0;
 }
 
-#user_mssg {
-    flex-grow: 1;
-    padding: 8px;
-    border: 1px solid #800080; /* Purple border for the input area */
-    margin-right: 10px;
+input[type=text]:focus{
+    border-color:#E7D8EA ;
+    box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.075) inset, 0px 0px 10px #487B98;
 }
 
-#send_message {
-    background-color: #800080; /* Purple button color */
-    color: #fff; /* White text color */
-    border: none;
-    padding: 10px 15px;
-    cursor: pointer;
+@keyframes fadeIn {
+  0% {opacity: 0;}
+  100% {opacity: 1;}
+}
+.others-msg {
+    background: #efefef none repeat scroll 0 0;
+    border-radius: 10px;
+    color: #646464;
+    font-size: 14px;
+    margin-left: 1rem;
+    padding: 1rem;
+    box-shadow: rgb(0 0 0 / 25%) 0px 5px 5px 2px;
+    margin-bottom: 10px;
+    float: left; /* Align incoming messages to the left */
+    clear: both;
+    display: inline-block; /* Allow the box to adjust its size based on content */
+}
+
+.my-msg {
+    background-color: #3a12ff;
+    background-image: linear-gradient(45deg, #d5a8de 0%,  #9858ac 50%, #8134AF 75%, #487B98 100%);
+    color: #fff;
+    border-radius: 10px;
+    font-size: 14px;
+    padding: 5px 10px 5px 12px;
+    box-shadow: rgb(0 0 0 / 25%) 0px 2px 5px 2px;
+    margin-bottom: 10px;
+    float: right; /* Align outgoing messages to the right */
+    clear: both;
+    display: inline-block; /* Allow the box to adjust its size based on content */
+}
+
+
+.system-msg {
+    margin-right:7em;
+    margin-left: 1em;
+    padding: 0.5em 0.5em 0.5em 1em;
+    color: #E7D8EA;
+    font-size:0.9em;
+}
+
+.timestamp {
+    color: #487B98;
+    font-size:0.7em;
+}
+
+.other-username {
+    font-weight: bold;
+    font-size: 1.1em;
+    color: #206ED2;
+}
+
+.my-username {
+    font-weight: bold;
+    font-size: 1.1em;
+    color: #dfbbe7;
+}
+
+#msg-input {
+    border-color: #E7D8EA;
+    border-width: 5px;
+}
+
+#get-username {
+    display: none !important;
 }
