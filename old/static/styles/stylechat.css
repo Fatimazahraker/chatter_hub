@@ -95,13 +95,15 @@ input[type=text]:focus{
     margin-bottom: 10px;
     float: left; /* Align incoming messages to the left */
     clear: both;
+    max-width: 500px;
+    word-wrap: break-word;
     display: inline-block; /* Allow the box to adjust its size based on content */
 }
 
 .my-msg {
-    background-color: #3a12ff;
-    background-image: linear-gradient(45deg, #d5a8de 0%,  #9858ac 50%, #8134AF 75%, #487B98 100%);
-    color: #fff;
+    background-color: #d5a8de;
+    color: #000000; /* Set text color to white */
+    background-image: #487B98;
     border-radius: 10px;
     font-size: 14px;
     padding: 5px 10px 5px 12px;
@@ -109,6 +111,8 @@ input[type=text]:focus{
     margin-bottom: 10px;
     float: right; /* Align outgoing messages to the right */
     clear: both;
+    max-width: 500px;
+    word-wrap: break-word;
     display: inline-block; /* Allow the box to adjust its size based on content */
 }
 
@@ -117,13 +121,13 @@ input[type=text]:focus{
     margin-right:7em;
     margin-left: 1em;
     padding: 0.5em 0.5em 0.5em 1em;
-    color: #E7D8EA;
+    color: #487B98;
     font-size:0.9em;
 }
 
 .timestamp {
     color: #487B98;
-    font-size:0.7em;
+    font-size: 1em solid;
 }
 
 .other-username {
@@ -135,7 +139,7 @@ input[type=text]:focus{
 .my-username {
     font-weight: bold;
     font-size: 1.1em;
-    color: #dfbbe7;
+    color: #487B98;
 }
 
 #msg-input {
