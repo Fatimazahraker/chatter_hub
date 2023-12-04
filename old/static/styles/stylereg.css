@@ -11,21 +11,18 @@ h2 {
     line-height: normal;
     text-align: left;
 }
-
 form {
-    max-width: 750px;
-    /*height: 490px;*/
-    /* position: absolute; */
-    /*top: 50%;*/
-    margin: auto;
-    margin-top: 40px;
-    /* left: 50%; */
-    /* transform: translate(-50%, -50%); */
+    width: 750px;
+    height: 490px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     background-color: #FFFFFF;
-    padding: 30px;
-    /* display: inline-block; */
+    padding:30px;
+    display: inline-block;
     text-align: right;
-    z-index: -1;
+    
 }
 
 .purple-link {
@@ -78,15 +75,11 @@ form {
 }
 .error {
     text-align: center;
-    background-color: #487B98;
-    /* Red color */
-    color: #d5a8de;
-    /* White text color */
+    background-color: #487B98;/* Red color */
+    color: #d5a8de; /* White text color */
     padding: 10px;
-    border-radius: 10px;
-    /* Adjust the border-radius as needed */
-    margin: 10px auto;
-    max-width: 600px;
+    border-radius: 10px; /* Adjust the border-radius as needed */
+    margin-top: 10px;
 }
 .closebtn {
     margin-left: 15px;
@@ -97,24 +90,8 @@ form {
     line-height: 20px;
     cursor: pointer;
     transition: 0.3s;
-}
+  }
   
-.closebtn:hover {
+  .closebtn:hover {
     color: #487B98;
-}
-@media screen and (max-witdh: 600px)
-{
-    form {
-        width: auto;
-        height: auto;
-        margin: auto;
-    }
-
-    .user-info div {
-        margin-bottom: 15px;
-    }
-
-    .user-action div {
-        margin-top: 15px;
-    }
-}
+  }

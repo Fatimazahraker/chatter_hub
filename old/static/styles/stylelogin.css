@@ -14,19 +14,16 @@ body {
 }
 
 form {
-    max-width: 750px;
-    /*height: 490px;*/
-    /* position: absolute; */
-    /*top: 50%;*/
-    margin: auto;
-    margin-top: 40px;
-    /* left: 50%; */
-    /* transform: translate(-50%, -50%); */
+    width: 750px;
+    height: 490px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     background-color: #FFFFFF;
     padding: 30px;
-    /* display: inline-block; */
+    display: inline-block;
     text-align: right;
-    z-index: -1;
 }
 
 .purple-link {
