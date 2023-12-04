@@ -1,0 +1,73 @@
+body {
+    background: #FFF;
+    margin:0 20px;
+    padding: 0;
+}
+#icon-container {
+    margin-top: 20%;
+
+}
+#icon-container,
+#welcome-message,
+#button-container {
+    top: 50%;
+    left: 50%;
+    margin-left: 41%;
+}
+#welcome-message {
+    text-align: justify;
+}
+#home-chat {
+    top: -50%;
+    left: -50%;
+    margin-right: 10%;
+    margin-top: 17%;
+    box-shadow: 4px 8px 4px gray;
+}
+/*body {
+    margin: 0;
+    
+    
+    height: 100vh;
+    display: flex;
+    flex-direction: column;  Stack elements vertically 
+    justify-content: space-between;  Align items at the start and end 
+    align-items: center;
+    color: white;
+    font-family: Arial, sans-serif;
+}*/
+
+/*#button-container {
+    margin-top: 20px; /* Add some margin at the bottom 
+    margin-bottom: 20px;
+    
+    
+}*/
+
+.button {
+    background-color: #EFD7ED;
+    color: #000;
+    font-family: Inter;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    text-decoration-line: none;
+    text-align: center;
+    padding-top: 5px;
+    margin-top: 20px;
+    border: 2px solid #000;
+    box-shadow: 4px 8px 4px gray;
+}
+
+#welcome-message {
+    color: #487B98;
+    font-family: Inter;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    width: 299px;
+    height: 97px;
+    flex-shrink: 0;
+}

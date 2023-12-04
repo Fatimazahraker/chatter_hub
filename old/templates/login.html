@@ -8,60 +8,63 @@
     <!-- Link to the external stylesheet for login styles -->
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/stylelogin.css') }}">
     <!-- Link to Bootstrap CSS via CDN -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 </head>
 
 <body>
-    <div class="main-section">
-        <div clases="jumbotron">
-            <h1 class="display-4">Chatter Hub</h1>
-            <p class="lead">Welcome to Chatter hub join us today!</p>
-        </div>
-
-    </div>
-    <div class="tilte-chat">
-        <h2>Login now</h2>
-        <p>Enter your usename and password lo login</p>
-    </div>
-
+    <!-- Flash message placeholder -->
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <p class=formError>{{ messages[0] }}</p>
+        {% endif %}
+    {% endwith %}
     <!-- Login Form -->
-    <form action="" method="post" novalidate>
-        <!-- Hidden fields for CSRF protection -->
-        {{ form.hidden_tag() }}
-        <fieldset class="user-info">
-            <!-- Username Input -->
-        <p>
-            {{ form.username.label }}<br>
-            {{ form.username(size=32) }}
-        </p>
-        <!-- Password Input -->
-        <p>
-            {{ form.password.label }}<br>
-            {{ form.password(size=32) }}
-        </p>
+    <form action="" method="post">
+        <div class="row">
+            <div class="col-6 col-md-6">
+                <img src="/static/image/sign.PNG" alt="" style="width: 100%; height: 70%;">
+            </div>
+            <div class="col-6 col-md-6">
+                <div class="tilte-chat">
+                    <h2>Login to your account</h2>
+                    <!--<p>Reqister to start using Chatter hub</p>-->
+                </div>
+                <!-- Hidden fields for CSRF protection -->
+                {{ form.hidden_tag() }}
+                <!-- Hidden fields for CSRF protection -->
+                <fieldset class="user-info">
+                    
+                    <!-- Username Input -->
+                <p>
+                    {{ form.username.label }}<br>
+                    {{ form.username(class_='form-control', placeholder='Enter your name', autocomplete="off", autofocus=true) }}
+                </p>
+                <!-- Password Input -->
+                <p>
+                    {{ form.password.label }}<br>
+                    {{ form.password(class_='form-control', placeholder='Enter your password', autofocus=true) }}
+                </p>
+                <!-- Remember Me Checkbox -->
+                <p class="checkbox-container" >
+                    {{ form.remember_me() }}
+                    {{ form.remember_me.label }}
+                </p>
 
-        <!-- Remember Me Checkbox -->
-        <p>{{ form.remember_me() }} {{ form.remember_me.label }}</p>
-
-        </fieldset>
-        <fieldset class="user-action">
-            <!-- Submit Button -->
-            <p>{{ form.submit() }}</p>
-        </fieldset>
-
-        <!-- Flash message placeholder -->
-        {% with messages = get_flashed_messages() %} 
-            {% if messages %}
-                <!-- Display flashed messages -->
-                <ul class="flashes">
-                    {% for message in messages %}
-                        <li>{{ message }}</li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
-        {% endwith %}
+                </fieldset>
+                <fieldset class="user-action">
+                    <!-- Submit Button -->
+                    <div>
+                        <input type="submit" value="Login" class="form-control">
+                    </div>
+                </fieldset>
+                <p id="link-login">Not registered yet? Please registre <a href="{{ url_for('index') }}" class="purple-link">HERE</a></p>
+        
+            </div>
+        </div>
     </form>
-    <p>Not registered yet? Please registre <a href="{{ url_for('index') }}">HERE</a></p>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
 </body>
 
 </html>

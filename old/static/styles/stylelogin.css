@@ -1,80 +1,91 @@
-/* stylelogin.css */
-
 body {
-    background-color: #f8f9fa; /* Light grayish background color */
-    margin: 0 20px;
+    background-color: #E7D8EA !important;
+    margin: 0 20px !important;
 }
 
-.main-section {
-    background-color: #800080; /* Purple background color for the jumbotron */
-    color: #fff; /* Text color for the jumbotron */
-    font-weight: bold;
-    padding: 20px;
-    margin-top: 0px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+.tilte-chat h2 {
+    color: #d5a8de;
+    font-family: Inter;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: normal;
+    text-align: left;
 }
 
-/* Add these rules to style the "Login now" heading and paragraph */
-.tilte-chat h2, .tilte-chat p {
-    color: #800080; /* Purple color for headings and paragraphs */
-    margin-top: 10px;
-    margin-left: 20px;
+form {
+    max-width: 750px;
+    /*height: 490px;*/
+    /* position: absolute; */
+    /*top: 50%;*/
+    margin: auto;
+    margin-top: 40px;
+    /* left: 50%; */
+    /* transform: translate(-50%, -50%); */
+    background-color: #FFFFFF;
+    padding: 30px;
+    /* display: inline-block; */
+    text-align: right;
+    z-index: -1;
 }
 
-/* Add these rules to style the form sections */
-.user-info, .user-action {
-    background-color: #fff; /* White background color for form sections */
+.purple-link {
+    color: #d5a8de;
+}
+
+#link-login {
+    text-align: left;
+    margin-top: 3px;
+}
+
+.user-info,
+.user-action {
+    border: none !important ;
+}
+
+.user-info,
+.user-action {
+    background-color: #fff;
     padding: 20px;
     margin-top: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.0);
+    background: rgba(217, 217, 217, 0.40);
 }
 
-/* Add these rules to style form labels */
+.user-info ul,
+.user-action ul {
+    list-style: none;
+}
+
 .user-info label,
 .user-action label {
-    color: #800080; /* Purple color for labels */
+    display: block;
+    text-align: left;
+    color: #d5a8de;
+    font-family: Inter;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    margin-top: 0%;
 }
-
-.user-info input,
-.user-action input {
-    width: 100%; /* Make form inputs full-width */
+#remember_me {
+    display: inline-block !important;
 }
-/* Add these rules to style the submit button */
-form input.form-control[type="submit"] {
-    background-color: #800080; /* Purple color for the button */
-    color: #fff; /* Text color for the button */
-    font-size: 14px; /* Adjust the font size */
-    padding: 10px 20px; /* Adjust the padding to control the button size */
-    border: none; /* Remove the default button border */
-    cursor: pointer; /* Change the cursor to a pointer on hover */
-  
+.formError {
+    text-align: center;
+    background-color: #ff6b6b; /* Red color */
+    color: #fff; /* White text color */
+    padding: 10px;
+    border-radius: 10px; /* Adjust the border-radius as needed */
+    margin-top: 10px; /* Adjust the margin as needed */
 }
-
-/* Add these rules to change the color on hover for the submit button */
-form input[type="submit"]:hover {
-    background-color: #660066; /* Darker purple on hover for the button */
+/* Style for the Remember Me Checkbox */
+.checkbox-container {
+    display: flex;
+    align-items: center;
 }
-
-/* Add these rules to style links */
-form a {
-    color: #800080; /* Purple color for the link */
-    margin-left: 20px; /* Add some left margin to links */
-}
-
-/* Add these rules to change the color on hover for links */
-form a:hover {
-    color: #660066; /* Darker purple on hover for the link */
-}
-
-/* Add these rules to style flashed messages */
-.flashes {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.flashes li {
-    color: #800080; /* Purple color for flashed messages */
-    margin-bottom: 10px;
+.checkbox-container input {
+    margin-right: 5px;  /* Adjust the margin between the checkbox and label */
 }

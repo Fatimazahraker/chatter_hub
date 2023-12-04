@@ -11,18 +11,21 @@ h2 {
     line-height: normal;
     text-align: left;
 }
+
 form {
-    width: 750px;
-    height: 490px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    max-width: 750px;
+    /*height: 490px;*/
+    /* position: absolute; */
+    /*top: 50%;*/
+    margin: auto;
+    margin-top: 40px;
+    /* left: 50%; */
+    /* transform: translate(-50%, -50%); */
     background-color: #FFFFFF;
-    padding:30px;
-    display: inline-block;
+    padding: 30px;
+    /* display: inline-block; */
     text-align: right;
-    
+    z-index: -1;
 }
 
 .purple-link {
@@ -62,7 +65,7 @@ form {
 
 .user-info label,
 .user-action label {
-    color: #d5a8de; /* Purple color for labels */
+    color:  #487B98 ; /* Purple color for labels */
     display:block; /* separate the label and the input */
     text-align: left;
     font-family: Inter;
@@ -72,4 +75,46 @@ form {
     line-height: normal;
     margin-bottom: 5px;
 
+}
+.error {
+    text-align: center;
+    background-color: #487B98;
+    /* Red color */
+    color: #d5a8de;
+    /* White text color */
+    padding: 10px;
+    border-radius: 10px;
+    /* Adjust the border-radius as needed */
+    margin: 10px auto;
+    max-width: 600px;
+}
+.closebtn {
+    margin-left: 15px;
+    color: #d5a8de;
+    font-weight: bold;
+    float: right;
+    font-size: 22px;
+    line-height: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+  
+.closebtn:hover {
+    color: #487B98;
+}
+@media screen and (max-witdh: 600px)
+{
+    form {
+        width: auto;
+        height: auto;
+        margin: auto;
+    }
+
+    .user-info div {
+        margin-bottom: 15px;
+    }
+
+    .user-action div {
+        margin-top: 15px;
+    }
 }

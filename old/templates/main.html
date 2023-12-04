@@ -5,61 +5,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Background Image Example</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            background-color: #E7D8EA;
-            background-image: url('/static/image/sign.PNG');
-            background-size: contain;
-            background-size: 100% auto;
-            background-size: cover;
-            background-position: center;
-            height: 100vh;
-            display: flex;
-            flex-direction: column; /* Stack elements vertically */
-            justify-content: space-between; /* Align items at the start and end */
-            align-items: center;
-            color: white;
-            font-family: Arial, sans-serif;
-        }
+    <!-- Link to Bootstrap CSS via CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <!-- Link to the external stylesheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='stSyles/stylehome.css') }}">
 
-        #button-container {
-            margin-bottom: 20px; /* Add some margin at the bottom */
-            display: flex;
-            gap: 20px;
-        }
-
-        .button {
-            background-color: #487B98;
-            color: #E7D8EA;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            text-decoration: none;
-            cursor: pointer;
-        }
-
-        #welcome-message {
-            font-size: 24px; /* Adjust font size as needed */
-            text-align: center;
-            top: 0; /* Position it at the top of the page */
-            left: 50%;
-            transform: translateX(-50%);
-            color: #487B98
-        }
-    </style>
 </head>
 
 <body>
-    <div id="welcome-message">
-        <h2>Welcome to the Chatter Hub!</h2>
-    </div>
+    <div class="row">
+        <div class="col-6">
+            <div id="icon-container">
+                <img src="/static/image/icon-chat.png" alt="" style="width: 248px; height: 101px;">
+            </div>
+            <div id="welcome-message">
+                <p>Welcome to Chatter Hub, where 
+                    conversations come alive!
+                    Immerse yourself in a world of 
+                    diverse chat rooms, where every
+                    conversation is a journey.</p>
+            </div>
+            <div id="button-container">
+                <a href="{{ url_for('index') }}" class="button" style="width: 224px; height: 32px; display: block;">Create an account</a>
+                <a href="{{ url_for('login') }}" class="button" style="width: 224px; height: 32px; display: block;">Start now</a>
+            </div>
+        </div>
+        <div class="col-6">
+            <img id="home-chat" src="/static/image/home-chat.jpg" alt="" style="width: 386px; height: 374px;">
+        </div>
 
-    <div id="button-container">
-        <a href={{ url_for('index') }} class="button">Sign In</a>
-        <a href= {{ url_for('login') }} class="button">Sign up</a>
-    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+
 </body>
 
 </html>
