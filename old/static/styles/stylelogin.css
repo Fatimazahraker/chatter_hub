@@ -86,3 +86,8 @@ form {
 .checkbox-container input {
     margin-right: 5px;  /* Adjust the margin between the checkbox and label */
 }
+@media (max-width: 768px) {
+    form {
+        width: 90%; /* Adjust the width for smaller screens */
+    }
+}

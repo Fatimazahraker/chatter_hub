@@ -95,3 +95,9 @@ form {
   .closebtn:hover {
     color: #487B98;
   }
+  /* Media Query for smaller screens */
+@media (max-width: 768px) {
+    form {
+        width: 90%; /* Adjust the width for smaller screens */
+    }
+}

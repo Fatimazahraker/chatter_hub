@@ -52,10 +52,17 @@
 
                 <!-- Sidebar start -->
                 <nav id="sidebar">
-                    <h4>Rooms</h4>
-                    {% for room in rooms %}
-                        <p id="{{ room|title }}" class="select-room cursor-pointer">{{ room|title }}</p>
-                    {% endfor %}
+                    <div>
+                        <input type="text" id="new_room" placeholder="Type here..." autocomplete="off"> 
+                        <button type="button" id="send_newRoom">create room</button>
+                    
+                        <h4>Rooms</h4>
+                        <ul id="roomsList">
+                            {% for room in rooms %}
+                                <li id="{{ room|title }}" class="select-room cursor-pointer">{{ room|title }}</li>
+                            {% endfor %}
+                    </ul>
+                    </div>
                 </nav>
                 <!-- Sidebar end -->
 

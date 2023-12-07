@@ -4,7 +4,7 @@ from time import localtime, strftime
 from flask import Flask, flash, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import current_user, login_user, LoginManager, logout_user, login_required
-from wtfform_field import*
+from wtfform_field import RegistrationForm, LoginForm
 from models import *
 from flask_socketio import SocketIO, send, emit, join_room, leave_room
 """
@@ -55,7 +55,7 @@ def load_user(id):
 def home():
     return render_template('main.html')
 
-@app.route("/index", methods=['GET', 'POST'])
+@app.route("/index", methods=['GET', 'POST'], strict_slashes=False)
 def index():
     """
     Handles the home page for user registration.
@@ -155,6 +155,14 @@ def join(data):
     join_room(data['room'])
     send({'msg': data['username'] + " has joined the " + data['room'] + " room."}, room=data['room'])
 
+@socketio.on('new_room')
+def new_room(data):
+    room = data["new_room_name"]
+    print(room)
+    ROOMS.append(room)
+    join_room(room)
+    emit('new room received', data, broadcast=True)
+
 @socketio.on('leave')
 def leave(data):
     """
@@ -168,4 +176,4 @@ def leave(data):
 
 
 if __name__ == "__main__":
-    socketio.run(app, debug=True)
+    socketio.run(app, debug=True, port=5000, host='0.0.0.0')
