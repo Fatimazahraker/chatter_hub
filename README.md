@@ -68,15 +68,23 @@ python3 app.py
 
 Alternatively, you can vist [link to production server ](http://3.50.50.50.5)
 
-## Screenshot
+## Screenshots
 
-![Local Image](screenshot/main.PNG)
+### Main Screen
+![Main Screen](screenshots/main.PNG)
+Description: Overview of the main interface displaying key features.
 
-![Local Image](screenshot/login.PNG)
+### Login Screen
+![Login Screen](screenshots/login.PNG)
+Description: User authentication screen for secure access.
 
-![Local Image](screenshot/registratio.PNG)
+### Registration Screen
+![Registration Screen](screenshots/registration.PNG)
+Description: New user registration form for account creation.
 
-![Local Image](screenshot/chat_app.PNG)
+### Chat Application
+![Chat Application](screenshots/chat_app.PNG)
+Description: Real-time chat interface for seamless communication.
 
 ## License
 
