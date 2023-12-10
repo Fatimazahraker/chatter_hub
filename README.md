@@ -84,7 +84,7 @@ Description: User authentication screen for secure access.
 Description: New user registration form for account creation.
 
 ### Chat Application
-![Chat Application](screenshots/chat app.PNG)
+![Chat Application](screenshots/chatapp.PNG)
 Description: Real-time chat interface for seamless communication.
 
 ## License
