@@ -66,7 +66,7 @@ python3 app.py
 
 ```
 
-Alternatively, you can vist [link to production server ](http://3.50.50.50.5)
+Alternatively, you can vist [link to production server ](http://52.201.179.163)
 
 ## Screenshots
 
