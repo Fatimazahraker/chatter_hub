@@ -48,3 +48,14 @@ CREATE DATABASE chatapp WITH OWNER = chatapp;
 GRANT ALL PRIVILEGES ON DATABASE chatapp TO chatapp;
 
 ```
+
+```bash
+-- Create the "users" table
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    username VARCHAR(25) UNIQUE NOT NULL,
+    password VARCHAR NOT NULL
+);
+```
+
+OR you can vist [link to production server ](http://3.50.50.50.5)
