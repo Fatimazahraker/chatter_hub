@@ -72,6 +72,7 @@ Alternatively, you can vist [link to production server ](http://3.50.50.50.5)
 
 ### Main Screen
 ![Main Screen](screenshots/main.PNG)
+
 Description: Overview of the main interface displaying key features.
 
 ### Login Screen
