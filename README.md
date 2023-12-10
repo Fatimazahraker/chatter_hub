@@ -92,6 +92,6 @@ Description: Real-time chat interface for seamless communication.
 This project is licensed under the GNU GPLv3 - see the [LICENSE](https://choosealicense.com/licenses/gpl-3.0/) file for details.
 
 ## Authors
-Laila hazim <[Laila](https://github.com/laila22haz)>
+Laila hazmir <[Laila](https://github.com/laila22haz)>
 
 Fatimazahra kerdoun <[fatima zahra](https://github.com/Fatimazahraker)>
