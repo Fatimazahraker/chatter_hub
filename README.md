@@ -31,14 +31,14 @@ List of Key Features:
 
 Provide instructions on how to install your project. Include any dependencies and how to install them.
 
+### 1.Install Dependencies:
 ```bash
 # Install all the necessary dependencies
 pip install -r requirements.txt
 
-# To run the flask application 
-python3 app.py
 ```
-prepare your database 
+### 2.Prepare Your Database:
+Run the following commands to set up the database:
 
 ```bash
 -- Create a user with a password
@@ -48,7 +48,7 @@ CREATE DATABASE chatapp WITH OWNER = chatapp;
 GRANT ALL PRIVILEGES ON DATABASE chatapp TO chatapp;
 
 ```
-
+ Create the users table:
 ```bash
 -- Create the "users" table
 CREATE TABLE users (
@@ -57,8 +57,15 @@ CREATE TABLE users (
     password VARCHAR NOT NULL
 );
 ```
+### 3. Run Flask Application:
+Then run flask aplication 
+```bash
+# To run the flask application 
+python3 app.py
 
-OR you can vist [link to production server ](http://3.50.50.50.5)
+```
+
+Alternatively, you can vist [link to production server ](http://3.50.50.50.5)
 
 ## License
 
