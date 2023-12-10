@@ -11,6 +11,7 @@ Chatter Hub, a project born in the ALX Africa program, started as a portfolio en
 - [Features](#features)
 - [Installation](#installation)
 - [Usage](#usage)
+- [Screenshot](#screenshot)
 - [Authors](#Authors)
 - [License](#license)
 
@@ -67,10 +68,21 @@ python3 app.py
 
 Alternatively, you can vist [link to production server ](http://3.50.50.50.5)
 
+## Screenshot
+
+![Local Image](screenshot/main.PNG)
+
+![Local Image](screenshot/login.PNG)
+
+![Local Image](screenshot/registratio.PNG)
+
+![Local Image](screenshot/chat_app.PNG)
+
 ## License
 
 This project is licensed under the GNU GPLv3 - see the [LICENSE](https://choosealicense.com/licenses/gpl-3.0/) file for details.
 
 ## Authors
 Laila hazim <[Laila](https://github.com/laila22haz)>
+
 Fatimazahra kerdoun <[fatima zahra](https://github.com/Fatimazahraker)>
