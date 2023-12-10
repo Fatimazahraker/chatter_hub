@@ -18,6 +18,7 @@ Chatter Hub, a project born in the ALX Africa program, started as a portfolio en
 
 Chatter Hub is a dynamic chat application designed by Laila and Fatima Zahra. It streamlines online conversations, offering users a user-friendly interface to create accounts, securely sign in, and participate in real-time discussions within custom chat rooms.
 
+
 ## Features
 
 List of Key Features:
@@ -26,7 +27,7 @@ List of Key Features:
 - **Real-Time Discussions:** Engage in dynamic, real-time conversations.
 - **Custom Chat Rooms:** Create and join personalized chat spaces.
 
-## Installation
+## Installation and usage 
 
 Provide instructions on how to install your project. Include any dependencies and how to install them.
 
@@ -34,11 +35,16 @@ Provide instructions on how to install your project. Include any dependencies an
 # Install all the necessary dependencies
 pip install -r requirements.txt
 
-## Ussage
- 
-```bash
 # To run the flask application 
-python3 app.py  
+python3 app.py
+```
+prepare your database 
 
+```bash
+-- Create a user with a password
 
+CREATE USER chatapp WITH PASSWORD 'noor';
+CREATE DATABASE chatapp WITH OWNER = chatapp;
+GRANT ALL PRIVILEGES ON DATABASE chatapp TO chatapp;
 
+```
