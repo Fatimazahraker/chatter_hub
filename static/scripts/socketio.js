@@ -3,8 +3,19 @@ document.addEventListener("DOMContentLoaded", () => {
     location.protocol + "//" + document.domain + ":" + location.port
   );
   const username = document.querySelector("#get-username").innerHTML;
-  let room = "Lounge";
-  joinRoom("Lounge");
+  let room = "";  // Initialize to an empty string initially
+
+  // Fetch the list of rooms from the server
+  // Assuming you have a route in your Flask app to retrieve the list of rooms
+  fetch("/get_rooms")
+    .then(response => response.json())
+    .then(data => {
+      // Assuming data.rooms is an array of room names
+      if (data.rooms.length > 0) {
+        room = data.rooms[4];  // Set the default room to the first room in the list
+        joinRoom(room);
+      }
+    });
 
   document.querySelector("#send_message").onclick = () => {
     socket.emit("message", {

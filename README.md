@@ -30,8 +30,6 @@ List of Key Features:
 
 ## Installation and usage 
 
-Provide instructions on how to install your project. Include any dependencies and how to install them.
-
 ### 1.Install Dependencies:
 ```bash
 # Install all the necessary dependencies

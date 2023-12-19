@@ -7,6 +7,11 @@ from flask_login import current_user, login_user, LoginManager, logout_user, log
 from wtfform_field import RegistrationForm, LoginForm
 from models import *
 from flask_socketio import SocketIO, send, emit, join_room, leave_room
+from flask_migrate import Migrate
+from datetime import datetime
+from flask import abort
+from flask import jsonify
+
 """
 A simple Flask application for a chat system with user registration and login features.
 
@@ -38,12 +43,12 @@ db_password = os.environ.get('DB_PASSWORD', 'default_password')
 db_name = os.environ.get('DB_NAME', 'default_database')
 
 app = Flask(__name__)
-
 app.secret_key = secrets.token_hex(32)
 app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql://{db_username}:{db_password}@localhost/{db_name}'
-
 db.init_app(app)
+migrate = Migrate(app, db)
 socketio = SocketIO(app)
+
 ROOMS = ["lounge", "news", "games", "coding"]
 login_manager = LoginManager(app)
 
@@ -111,6 +116,12 @@ def logout():
     flash('You have logged out successfully', 'success')
     return redirect(url_for('login'))
 
+@app.route('/get_rooms', methods=['GET'])
+def get_rooms():
+    rooms = Room.query.all()
+    room_names = [room.name for room in rooms]
+    return jsonify({'rooms': room_names})
+
 @app.route("/chat", methods=['GET', 'POST'])
 def chat():
     """
@@ -121,10 +132,14 @@ def chat():
     - POST: Not used in the current implementation.
     """
     if not current_user.is_authenticated:
-        #flash('Please login', 'danger')
         return redirect(url_for('login'))
 
-    return render_template("chat.html", username=current_user.username, rooms=ROOMS)
+    rooms = Room.query.all()
+
+    messages = Message.query.order_by(Message.timestamp).all()
+
+    return render_template("chat.html", username=current_user.username, messages=messages, rooms=rooms)
+
 
 @socketio.on('message')
 def message(data):
@@ -137,31 +152,52 @@ def message(data):
     Emits:
     - Sends the message to the specified chat room with additional details.
     """
-    print(f"\n\n {data}\n\n")
-    send({'msg': data['msg'], 'username': data['username'], 'time_stamp':
-        strftime('%X %x', localtime())}, room=data['room'])
+    user_id = current_user.id if current_user.is_authenticated else None
+
+    # Check if the room exists
+    room = Room.query.filter_by(name=data['room']).first()
+#if room is None:
+        # Handle the case where the room doesn't exist (you might want to return an error)
+        #return
+
+    # Create a new Message object
+    new_message = Message(content=data['msg'], user_id=user_id, room_id=room.id)
+    
+    db.session.add(new_message)
+    db.session.commit()
+
+    # Broadcast the message to everyone in the room, including the sender
+    emit('message', {'msg': data['msg'], 'username': data['username'], 'time_stamp':
+        strftime('%X %x', localtime())}, room=room.name)
+
+
 
 @socketio.on('join')
 def join(data):
-    """
-    Handles a user joining a chat room.
+    room = data['room']
+    join_room(room)
 
-    Args:
-    - data (dict): Dictionary containing user and room details.
+    # Send a system message indicating the user has joined
+    send({'msg': data['username'] + " has joined the " + room + " room."}, room=room)
 
-    Emits:
-    - Sends a system message to the chat room indicating the user has joined.
-    """
-    join_room(data['room'])
-    send({'msg': data['username'] + " has joined the " + data['room'] + " room."}, room=data['room'])
 
 @socketio.on('new_room')
 def new_room(data):
-    room = data["new_room_name"]
-    print(room)
-    ROOMS.append(room)
-    join_room(room)
-    emit('new room received', data, broadcast=True)
+    room_name = data["new_room_name"]
+    existing_room = Room.query.filter_by(name=room_name).first()
+    if not existing_room:
+        # Create a new Room object
+        new_room = Room(name=room_name, created_by=current_user.id)
+        db.session.add(new_room)
+        db.session.commit()
+
+        # Join the new room
+        join_room(new_room.name)
+
+        # Emit an event to inform clients about the new room
+        emit('new room received', {'new_room_name': new_room.name, 'created_by': new_room.created_by}, broadcast=True)
+
+
 
 @socketio.on('leave')
 def leave(data):

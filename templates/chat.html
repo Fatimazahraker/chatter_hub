@@ -59,7 +59,7 @@
                         <h4>Rooms</h4>
                         <ul id="roomsList">
                             {% for room in rooms %}
-                                <li id="{{ room|title }}" class="select-room cursor-pointer">{{ room|title }}</li>
+                                <li id="{{ room.name|title }}" class="select-room cursor-pointer">{{ room.name|title }}</li>
                             {% endfor %}
                     </ul>
                     </div>
@@ -71,6 +71,19 @@
 
                     <!-- Display message start-->
                     <div id="display-message-section">
+                        {% for message in messages %}
+                                <p class="{% if message.author == current_user %}my-msg{% else %}others-msg{% endif %}">
+                                    <span class="{% if message.author == current_user %}my-username{% else %}other-username{% endif %}">
+                                        {{ message.author.username }}
+                                    </span>
+                                    <br>
+                                    {{ message.content }}
+                                    <br>
+                                    <span class="timestamp">
+                                        {{ message.timestamp.strftime('%X %x') }}
+                                    </span>
+                                    </p>
+                         {% endfor %}
                     </div>
                     <!-- Display message end -->
 
