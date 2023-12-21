@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
     .then(data => {
       // Assuming data.rooms is an array of room names
       if (data.rooms.length > 0) {
-        room = data.rooms[4];  // Set the default room to the first room in the list
+        room = data.rooms[2];  // Set the default room to the first room in the list
         joinRoom(room);
       }
     });
@@ -111,19 +111,12 @@ document.addEventListener("DOMContentLoaded", () => {
     li.innerHTML = createRoom;
     li.setAttribute("class", "select-room cursor-pointer");
     li.setAttribute("id", createRoom);
-
-    const roomsList = document.querySelector("#roomsList");
-    if (roomsList) {
-      roomsList.appendChild(li);
-      selectRoom();
-    } else {
-      console.error('The "rooms" container does not exist.');
-    }
   });
 
   document.querySelector("#logout-btn").onclick = () => {
     leaveRoom(room);
   };
+
 
   function leaveRoom(room) {
     socket.emit("leave", { username: username, room: room });
@@ -135,6 +128,10 @@ document.addEventListener("DOMContentLoaded", () => {
   function joinRoom(newRoom) {
     socket.emit("join", { username: username, room: newRoom });
     room = newRoom;
+
+    // Update the URL without triggering a page reload
+    history.pushState(null, null, `/chat/${room}`);
+    
     document.querySelector("#" + CSS.escape(room)).style.color = "#487B98";
     document.querySelector("#" + CSS.escape(room)).style.backgroundColor =
       "white";

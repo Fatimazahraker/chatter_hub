@@ -3,7 +3,9 @@ import os
 from time import localtime, strftime
 from flask import Flask, flash, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
+from wtforms import ValidationError
 from flask_login import current_user, login_user, LoginManager, logout_user, login_required
+from verification import sendmail
 from wtfform_field import RegistrationForm, LoginForm
 from models import *
 from flask_socketio import SocketIO, send, emit, join_room, leave_room
@@ -60,6 +62,16 @@ def load_user(id):
 def home():
     return render_template('main.html')
 
+@app.route('/verify/<receiver_email>/<receiver_token>', methods=['GET'])
+def verify_email_token(receiver_email, receiver_token):
+    user = User.query.filter_by(verification_token=receiver_token).first()
+    if not user or user.email != receiver_email:
+        abort(404)  # User not found or email mismatch
+    user.is_verified = True
+    db.session.commit()
+
+    return render_template('status.html')
+
 @app.route("/index", methods=['GET', 'POST'], strict_slashes=False)
 def index():
     """
@@ -72,14 +84,22 @@ def index():
     reg_form = RegistrationForm()
 
     if reg_form.validate_on_submit():
-        username = reg_form.username.data
-        password = reg_form.password.data
-        
-        user = User(username=username, password=password)
-        db.session.add(user)
-        db.session.commit()
-        flash('Registered successfully. Please login.', 'success')
-        return redirect(url_for("login"))
+        # Attempt to register user
+        try:
+            user = reg_form.register_user()
+            # Send a verification email
+            verification_link = url_for('verify_email_token', receiver_email=user.email, receiver_token=user.verification_token, _external=True)
+            subject = 'Email Verification'
+            html_email = f"Welcome to CHATTER-HUB! Click the following link to verify your email: {verification_link}"
+            # Add the user to the database
+            db.session.add(user)
+            db.session.commit()
+            # Send verification email
+            sendmail(subject, html_email, user.email)
+            # Redirect to a page indicating the verification email has been sent
+            return render_template('verification_send.html', email=user.email)
+        except ValidationError as e:
+            flash(str(e), 'error')
     return render_template("index.html", form=reg_form)
 
 @app.route("/login", methods=['GET', 'POST'])
@@ -100,7 +120,7 @@ def login():
             flash('invalid username or password', category='error')
             return redirect(url_for("login"))
         login_user(user, remember=form.remember_me.data)
-        return redirect(url_for('chat'))
+        return redirect(url_for('chat', room_name='sport'))
     return render_template('login.html', title='Sign In', form=form)
 
 
@@ -123,7 +143,8 @@ def get_rooms():
     return jsonify({'rooms': room_names})
 
 @app.route("/chat", methods=['GET', 'POST'])
-def chat():
+@app.route("/chat/<room_name>", methods=['GET', 'POST'])
+def chat(room_name='sport'):
     """
     Handles the chat page.
 
@@ -135,8 +156,15 @@ def chat():
         return redirect(url_for('login'))
 
     rooms = Room.query.all()
+    room = Room.query.filter(Room.name.ilike(room_name)).first()
+    print(f"the room: {room.name}, room id :{room.id}")
 
-    messages = Message.query.order_by(Message.timestamp).all()
+    messages = Message.query.filter_by(room_id=room.id).order_by(Message.timestamp).all()
+
+    # Printing messages
+    print("\nMessages:")
+    for message in messages:
+        print(f"Message ID: {message.id}, Content: {message.content}, User ID: {message.user_id}, Room ID: {message.room_id}, Timestamp: {message.timestamp}")
 
     return render_template("chat.html", username=current_user.username, messages=messages, rooms=rooms)
 
@@ -153,22 +181,23 @@ def message(data):
     - Sends the message to the specified chat room with additional details.
     """
     user_id = current_user.id if current_user.is_authenticated else None
-
+    print(data)
+    print(f"room: {data['room']}")
     # Check if the room exists
-    room = Room.query.filter_by(name=data['room']).first()
-#if room is None:
-        # Handle the case where the room doesn't exist (you might want to return an error)
-        #return
+    room = Room.query.filter(Room.name.ilike(data['room'])).first()
 
-    # Create a new Message object
+    print(f"Room ID: {room.id}, Name: {room.name}, Created by: {room.created_by}")
+
+    print(f"message: {data['msg']}")
+
+    # Create a new Message object for a regular user message
     new_message = Message(content=data['msg'], user_id=user_id, room_id=room.id)
-    
+    print(f"Content: {new_message.content}, User ID: {new_message.user_id}, Room ID: {new_message.room_id}")
     db.session.add(new_message)
     db.session.commit()
 
     # Broadcast the message to everyone in the room, including the sender
-    emit('message', {'msg': data['msg'], 'username': data['username'], 'time_stamp':
-        strftime('%X %x', localtime())}, room=room.name)
+    emit('message', {'msg': data['msg'], 'username': data['username'], 'time_stamp': strftime('%X %x', localtime())}, room=room.name)
 
 
 

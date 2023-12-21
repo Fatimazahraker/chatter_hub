@@ -1,3 +1,5 @@
 export DB_USERNAME=chatapp
 export DB_PASSWORD=noor
 export DB_NAME=chatapp
+export DB_EMAIL=eza90782@gmail.com
+export DB_EMAIL_PASSWD="qzjq vsmg fcyj hipb"
