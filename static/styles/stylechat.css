@@ -150,3 +150,61 @@ input[type=text]:focus{
 #get-username {
     display: none !important;
 }
+/* Add these styles to your existing CSS file or create a new one */
+
+/* Default styles for the emoji selector */
+ul li.emoji-selector {
+    display: none; /* Hide the emoji selector by default */
+    position: relative; /* Add relative positioning */
+    border: 1px solid #ccc; /* Add a border around the emoji selector */
+    border-radius: 5px; /* Add border-radius for rounded corners */
+    padding: 10px; /* Add padding for spacing */
+    box-sizing: border-box; /* Include padding and border in the total width and height */
+}
+
+/* Styles for the emoji selector when it's active */
+ul li.emoji-selector.active {
+    display: block; /* Show the emoji selector when active */
+}
+
+/* Style for the emoji list container */
+ul li.emoji-selector ul.emoji-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 200px; /* Adjust the max height as needed */
+    overflow-y: auto;
+    position: absolute; /* Position the emoji list absolutely */
+    top: calc(100% - 10px); /* Align the top of the list above the input container */
+    left: 0; /* Align the list with the left side of the input container */
+    width: 100%; /* Make the list width match the input container */
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 10; /* Ensure the list appears above other elements */
+}
+
+/* Style for individual emoji items */
+ul li.emoji-selector ul.emoji-list li {
+    display: inline-block;
+    font-size: 20px;
+    cursor: pointer;
+    margin: 5px;
+}
+
+/* Style for the search input */
+ul li.emoji-selector .input-container {
+    margin-bottom: 10px;
+}
+
+/* Style for the search input field */
+ul li.emoji-selector .input-container input {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+    cursor: text; /* Set cursor to text for better indication */
+}

@@ -191,13 +191,14 @@ def message(data):
     print(f"message: {data['msg']}")
 
     # Create a new Message object for a regular user message
-    new_message = Message(content=data['msg'], user_id=user_id, room_id=room.id)
+    new_message = Message(content=data['msg'], user_id=user_id, room_id=room.id, emoji=data.get('emoji', None))
     print(f"Content: {new_message.content}, User ID: {new_message.user_id}, Room ID: {new_message.room_id}")
     db.session.add(new_message)
     db.session.commit()
 
     # Broadcast the message to everyone in the room, including the sender
-    emit('message', {'msg': data['msg'], 'username': data['username'], 'time_stamp': strftime('%X %x', localtime())}, room=room.name)
+    emit('message', {'msg': data['msg'], 'username': data['username'], 'emoji': data.get('emoji'), 'time_stamp': strftime('%X %x', localtime())}, room=room.name)
+
 
 
 
@@ -218,6 +219,7 @@ def new_room(data):
         # Create a new Room object
         new_room = Room(name=room_name, created_by=current_user.id)
         db.session.add(new_room)
+
         db.session.commit()
 
         # Join the new room

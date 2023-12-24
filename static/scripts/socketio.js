@@ -2,6 +2,51 @@ document.addEventListener("DOMContentLoaded", () => {
   var socket = io.connect(
     location.protocol + "//" + document.domain + ":" + location.port
   );
+
+  const emojiSelectorIcon = document.getElementById('emojiSelectorIcon');
+  const emojiSelector = document.getElementById('emojiSelector');
+
+  emojiSelectorIcon.addEventListener('click', () => {
+    emojiSelector.classList.toggle('active');
+  });
+
+  fetch('https://emoji-api.com/emojis?access_key=ff394963ee82187b533833121345244ff3c457ee')
+    .then(res => res.json())
+    .then(data => loadEmoji(data))
+
+  const emojiSearchInput = document.getElementById('emojiSearch');
+  const emojiList = document.getElementById('emojiList');
+  
+  // Event listener for emoji search
+  emojiSearchInput.addEventListener('input', () => {
+    const searchQuery = emojiSearchInput.value.toLowerCase();
+
+    // Filter emojis based on the search query
+    Array.from(emojiList.children).forEach((emoji) => {
+        const emojiText = emoji.textContent.toLowerCase();
+        if (emojiText.includes(searchQuery)) {
+            emoji.style.display = 'block';
+        } else {
+            emoji.style.display = 'none';
+        }
+    });
+});
+
+  function loadEmoji(data) {
+    data.forEach(emoji => {
+        let li = document.createElement('li');
+        li.textContent = emoji.character;
+        emojiList.appendChild(li);
+    });
+  }
+  
+  document.getElementById('emojiList').addEventListener('click', (event) => {
+    if (event.target.tagName === 'LI') {
+        const selectedEmoji = event.target.textContent;
+        document.querySelector("#user_message").value += selectedEmoji;
+    }
+  });
+
   const username = document.querySelector("#get-username").innerHTML;
   let room = "";  // Initialize to an empty string initially
 
@@ -17,13 +62,17 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
-  document.querySelector("#send_message").onclick = () => {
+  
+  
+    document.querySelector("#send_message").onclick = () => {
     socket.emit("message", {
       msg: document.querySelector("#user_message").value,
       username: username,
       room: room,
+      
     });
     document.querySelector("#user_message").value = "";
+     
   };
 
   socket.on('message', data => {
@@ -33,6 +82,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const p = document.createElement('p');
         const span_username = document.createElement('span');
         const span_timestamp = document.createElement('span');
+        const span_emoji = document.createElement('span');
         const br = document.createElement('br')
         // Display user's own message
         if (data.username == username) {
@@ -46,8 +96,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 span_timestamp.setAttribute("class", "timestamp");
                 span_timestamp.innerText = data.time_stamp;
 
+                span_emoji.innerText = data.emoji;
                 // HTML to append
-                p.innerHTML += span_username.outerHTML + br.outerHTML + data.msg + br.outerHTML + span_timestamp.outerHTML
+                p.innerHTML += span_username.outerHTML + br.outerHTML + data.msg + span_emoji.outerHTML + br.outerHTML + span_timestamp.outerHTML
 
                 //Append
                 document.querySelector('#display-message-section').append(p);
@@ -60,6 +111,8 @@ document.addEventListener("DOMContentLoaded", () => {
             span_username.setAttribute("class", "other-username");
             span_username.innerText = data.username;
 
+            span_emoji.innerText = data.emoji;
+
             // Timestamp
             span_timestamp.setAttribute("class", "timestamp");
             span_timestamp.innerText = data.time_stamp;
@@ -68,7 +121,7 @@ document.addEventListener("DOMContentLoaded", () => {
             //p.innerText = data.msg;
 
             // HTML to append
-            p.innerHTML += span_username.outerHTML + br.outerHTML + data.msg + br.outerHTML + span_timestamp.outerHTML;
+            p.innerHTML += span_username.outerHTML + br.outerHTML + data.msg + span_emoji.outerHTML + br.outerHTML + span_timestamp.outerHTML;
 
             //Append
             document.querySelector('#display-message-section').append(p);
@@ -118,6 +171,7 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
 
+
   function leaveRoom(room) {
     socket.emit("leave", { username: username, room: room });
     document.querySelectorAll(".select-room").forEach((p) => {
@@ -139,6 +193,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelector("#user_message").focus();
   }
 
+
   function scrollDownChatWindow() {
     const chatWindow = document.querySelector("#display-message-section");
     chatWindow.scrollTop = chatWindow.scrollHeight;
@@ -154,4 +209,5 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   selectRoom(); // Call selectRoom function initially to set up room selection
+  
 });

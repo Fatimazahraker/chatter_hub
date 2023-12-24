@@ -13,4 +13,6 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById("send_message").click();
         }
     });
+
+    
 });
