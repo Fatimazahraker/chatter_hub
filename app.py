@@ -120,7 +120,7 @@ def login():
             flash('invalid username or password', category='error')
             return redirect(url_for("login"))
         login_user(user, remember=form.remember_me.data)
-        return redirect(url_for('chat', room_name='sport'))
+        return redirect(url_for('chat'))
     return render_template('login.html', title='Sign In', form=form)
 
 
@@ -142,9 +142,21 @@ def get_rooms():
     room_names = [room.name for room in rooms]
     return jsonify({'rooms': room_names})
 
+@app.route('/get_messages/<room>', methods=['GET'])
+def get_messages(room):
+    print(f"Received request for messages in room: {room}")
+    room_obj = Room.query.filter(Room.name.ilike(room)).first()
+    if not room_obj:
+        abort(404)  # Room not found
+
+    messages = Message.query.filter_by(room_id=room_obj.id).order_by(Message.timestamp).all()
+    messages_data = [{'msg': message.content, 'username': message.author.username, 'time_stamp': message.timestamp} for message in messages]
+
+    return jsonify({'messages': messages_data})
+
+
 @app.route("/chat", methods=['GET', 'POST'])
-@app.route("/chat/<room_name>", methods=['GET', 'POST'])
-def chat(room_name='sport'):
+def chat():
     """
     Handles the chat page.
 
@@ -156,18 +168,31 @@ def chat(room_name='sport'):
         return redirect(url_for('login'))
 
     rooms = Room.query.all()
-    room = Room.query.filter(Room.name.ilike(room_name)).first()
-    print(f"the room: {room.name}, room id :{room.id}")
+#room = Room.query.filter(Room.name.ilike(room_name)).first()
+   # print(f"the room: {room.name}, room id :{room.id}")
 
-    messages = Message.query.filter_by(room_id=room.id).order_by(Message.timestamp).all()
+    messages = Message.query.order_by(Message.timestamp).all()
 
     # Printing messages
     print("\nMessages:")
     for message in messages:
         print(f"Message ID: {message.id}, Content: {message.content}, User ID: {message.user_id}, Room ID: {message.room_id}, Timestamp: {message.timestamp}")
 
-    return render_template("chat.html", username=current_user.username, messages=messages, rooms=rooms)
+    return render_template("chat.html", username=current_user.username, rooms=rooms)
 
+@app.route("/delete_room/<room_name>", methods=['POST'])
+@login_required
+def delete_room(room_name):
+    room = Room.query.filter_by(name=room_name).first()
+    if not room or room.created_by != current_user.id:
+        abort(403)  # Forbidden - user did not create the room
+
+    # Delete the room and its associated messages
+    Message.query.filter_by(room_id=room.id).delete()
+    db.session.delete(room)
+    db.session.commit()
+
+    return redirect(url_for('chat'))
 
 @socketio.on('message')
 def message(data):
@@ -184,20 +209,21 @@ def message(data):
     print(data)
     print(f"room: {data['room']}")
     # Check if the room exists
-    room = Room.query.filter(Room.name.ilike(data['room'])).first()
+    roomi = Room.query.filter(Room.name.ilike(data['room'])).first()
 
-    print(f"Room ID: {room.id}, Name: {room.name}, Created by: {room.created_by}")
+    print(f"Room ID: {roomi.id}, Name: {roomi.name}, Created by: {roomi.created_by}")
 
     print(f"message: {data['msg']}")
 
     # Create a new Message object for a regular user message
-    new_message = Message(content=data['msg'], user_id=user_id, room_id=room.id, emoji=data.get('emoji', None))
+    new_message = Message(content=data['msg'], user_id=user_id, room_id=roomi.id)
     print(f"Content: {new_message.content}, User ID: {new_message.user_id}, Room ID: {new_message.room_id}")
     db.session.add(new_message)
     db.session.commit()
 
     # Broadcast the message to everyone in the room, including the sender
-    emit('message', {'msg': data['msg'], 'username': data['username'], 'emoji': data.get('emoji'), 'time_stamp': strftime('%X %x', localtime())}, room=room.name)
+    send({'msg': data['msg'], 'username': data['username'], 'time_stamp':
+        strftime('%X %x', localtime())}, room=data['room'])
 
 
 
@@ -206,7 +232,7 @@ def message(data):
 def join(data):
     room = data['room']
     join_room(room)
-
+    
     # Send a system message indicating the user has joined
     send({'msg': data['username'] + " has joined the " + room + " room."}, room=room)
 
@@ -228,7 +254,40 @@ def new_room(data):
         # Emit an event to inform clients about the new room
         emit('new room received', {'new_room_name': new_room.name, 'created_by': new_room.created_by}, broadcast=True)
 
+@socketio.on('delete_room')
+def delete_room(data):
+    room_name = data['room_name'].strip()
+    room = Room.query.filter(Room.name.ilike(room_name)).first()
 
+    if room and room.created_by == current_user.id:
+        Message.query.filter_by(room_id=room.id).delete()
+        db.session.delete(room)
+        db.session.commit()
+
+        # Broadcast the deletion event to inform clients
+        emit('room_deleted', {'room_name': room_name}, broadcast=True)
+        print(f"Emitted room_deleted event for {room_name}")
+    else:
+        emit('delete_room_error', {'message': 'You can\'t delete this room. Only the admin has access'})
+        print(f"Room not found or not deleted for {room_name}")
+
+@socketio.on('edit_room')
+def edit_room(data):
+    room_name = data['room_name'].strip()
+    new_room_name = data['new_room_name'].strip()
+    room = Room.query.filter(Room.name.ilike(room_name)).first()
+
+    if room and room.created_by == current_user.id:
+        # Perform the room editing logic
+        room.name = new_room_name
+        db.session.commit()
+
+        # Broadcast the edited event to inform clients
+        emit('room_edited', {'old_room_name': room_name, 'new_room_name': new_room_name}, broadcast=True)
+        print(f"Emitted room_edited event for {room_name} to {new_room_name}")
+    else:
+        # Emit an event to request confirmation from the client
+        emit('error_edit_room', {'room_name': room_name, 'new_room_name': new_room_name})
 
 @socketio.on('leave')
 def leave(data):

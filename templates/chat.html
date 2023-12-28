@@ -55,36 +55,52 @@
                 <!-- Sidebar start -->
                 <nav id="sidebar">
                     <div>
-                        <input type="text" id="new_room" placeholder="Type here..." autocomplete="off"> 
-                        <button type="button" id="send_newRoom">create room</button>
+                        <div id="createroom">
+                            <input type="text" id="new_room" placeholder="Type here..." autocomplete="off"> 
+                            <button type="button" id="send_newRoom">create room</button>
+                        </div>
+                        <div id="deleteroom">
+                            <input type="text" id="select_deleteroom" placeholder="Type here room to delete..." autocomplete="off"> 
+                            <button type="button" id="delete_room">delete room</button>
+                        </div>
+
+                        <div id="editroom">
+                            <input type="text" id="select_editroom" placeholder="Type here room to edit..." autocomplete="off"> 
+                            <button type="button" id="edit_room">edit room</button>
+                        </div>
                     
                         <h4>Rooms</h4>
                         <ul id="roomsList">
                             {% for room in rooms %}
                                 <li id="{{ room.name|title }}" class="select-room cursor-pointer">{{ room.name|title }}</li>
-                            {% endfor %}
+                                
+                                {% endfor %}
                     </ul>
                     </div>
                 </nav>
-                <!-- Sidebar end -->
+                <!-- Sidebar end --> 
 
                 <!-- Rightside pannel start -->
                 <div id="rightside-pannel">
 
                     <!-- Display message start-->
                     <div id="display-message-section">
-                        {% for message in messages %}
-                                <p class="{% if message.author == current_user %}my-msg{% else %}others-msg{% endif %}">
-                                    <span class="{% if message.author == current_user %}my-username{% else %}other-username{% endif %}">
-                                        {{ message.author.username }}
-                                    </span>
-                                    <br>
-                                    {{ message.content }}
-                                    <br>
-                                    <span class="timestamp">
-                                        {{ message.timestamp.strftime('%X %x') }}
-                                    </span>
+                       {% for room in rooms %}
+                            {% for message in messages %}
+                                {% if message.room_id == room.id %}
+                                    <p class="{% if message.author == current_user %}my-msg{% else %}others-msg{% endif %}">
+                                        <span class="{% if message.author == current_user %}my-username{% else %}other-username{% endif %}">
+                                            {{ message.author.username }}
+                                        </span>
+                                        <br>
+                                        {{ message.content }}
+                                        <br>
+                                        <span class="timestamp">
+                                            {{ message.timestamp.strftime('%X %x') }}
+                                        </span>
                                     </p>
+                                {% endif %}
+                            {% endfor %}
                          {% endfor %}
                     </div>
                     <!-- Display message end -->
@@ -134,7 +150,8 @@
         <script src="{{ url_for('static', filename='scripts/socketio.js') }}"></script>
         <!-- Custom chat JS -->
         <script src="{{ url_for('static', filename='scripts/chat_page.js') }}"></script>
-    
+        <!-- Custom feature JS -->
+        <script src="{{ url_for('static', filename='scripts/features.js') }}"></script>
         
 
     </body>

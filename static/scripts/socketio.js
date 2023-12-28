@@ -3,55 +3,12 @@ document.addEventListener("DOMContentLoaded", () => {
     location.protocol + "//" + document.domain + ":" + location.port
   );
 
-  const emojiSelectorIcon = document.getElementById('emojiSelectorIcon');
-  const emojiSelector = document.getElementById('emojiSelector');
-
-  emojiSelectorIcon.addEventListener('click', () => {
-    emojiSelector.classList.toggle('active');
-  });
-
-  fetch('https://emoji-api.com/emojis?access_key=ff394963ee82187b533833121345244ff3c457ee')
-    .then(res => res.json())
-    .then(data => loadEmoji(data))
-
-  const emojiSearchInput = document.getElementById('emojiSearch');
-  const emojiList = document.getElementById('emojiList');
   
-  // Event listener for emoji search
-  emojiSearchInput.addEventListener('input', () => {
-    const searchQuery = emojiSearchInput.value.toLowerCase();
-
-    // Filter emojis based on the search query
-    Array.from(emojiList.children).forEach((emoji) => {
-        const emojiText = emoji.textContent.toLowerCase();
-        if (emojiText.includes(searchQuery)) {
-            emoji.style.display = 'block';
-        } else {
-            emoji.style.display = 'none';
-        }
-    });
-});
-
-  function loadEmoji(data) {
-    data.forEach(emoji => {
-        let li = document.createElement('li');
-        li.textContent = emoji.character;
-        emojiList.appendChild(li);
-    });
-  }
-  
-  document.getElementById('emojiList').addEventListener('click', (event) => {
-    if (event.target.tagName === 'LI') {
-        const selectedEmoji = event.target.textContent;
-        document.querySelector("#user_message").value += selectedEmoji;
-    }
-  });
 
   const username = document.querySelector("#get-username").innerHTML;
   let room = "";  // Initialize to an empty string initially
 
-  // Fetch the list of rooms from the server
-  // Assuming you have a route in your Flask app to retrieve the list of rooms
+
   fetch("/get_rooms")
     .then(response => response.json())
     .then(data => {
@@ -62,8 +19,6 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
-  
-  
     document.querySelector("#send_message").onclick = () => {
     socket.emit("message", {
       msg: document.querySelector("#user_message").value,
@@ -79,62 +34,158 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Display current message
     if (data.msg) {
-        const p = document.createElement('p');
-        const span_username = document.createElement('span');
-        const span_timestamp = document.createElement('span');
-        const span_emoji = document.createElement('span');
-        const br = document.createElement('br')
-        // Display user's own message
-        if (data.username == username) {
-                p.setAttribute("class", "my-msg");
-
-                // Username
-                span_username.setAttribute("class", "my-username");
-                span_username.innerText = data.username;
-
-                // Timestamp
-                span_timestamp.setAttribute("class", "timestamp");
-                span_timestamp.innerText = data.time_stamp;
-
-                span_emoji.innerText = data.emoji;
-                // HTML to append
-                p.innerHTML += span_username.outerHTML + br.outerHTML + data.msg + span_emoji.outerHTML + br.outerHTML + span_timestamp.outerHTML
-
-                //Append
-                document.querySelector('#display-message-section').append(p);
-        }
-        // Display other users' messages
-        else if (typeof data.username !== 'undefined') {
-            p.setAttribute("class", "others-msg");
-
-            // Username
-            span_username.setAttribute("class", "other-username");
-            span_username.innerText = data.username;
-
-            span_emoji.innerText = data.emoji;
-
-            // Timestamp
-            span_timestamp.setAttribute("class", "timestamp");
-            span_timestamp.innerText = data.time_stamp;
-            
-            // Content of the message
-            //p.innerText = data.msg;
-
-            // HTML to append
-            p.innerHTML += span_username.outerHTML + br.outerHTML + data.msg + span_emoji.outerHTML + br.outerHTML + span_timestamp.outerHTML;
-
-            //Append
-            document.querySelector('#display-message-section').append(p);
-        }
-        // Display system message
-        else {
-            printSysMsg(data.msg);
-        }
-
-
+       // Display current messagehw
+      if (data.username == username) {
+        appendmssg(data);
+      }
+      // Display other users' messages
+      else if (typeof data.username !== 'undefined') {
+        appendother(data);
+      }
+      // Display system message
+      else {
+        printSysMsg(data.msg);
+      }
     }
     scrollDownChatWindow();
 });
+
+  
+
+  document.querySelector("#logout-btn").onclick = () => {
+    leaveRoom(room);
+  };
+
+
+  document.querySelector("#send_newRoom").onclick = () => {
+    socket.emit("new_room", {
+      new_room_name: document.querySelector("#new_room").value,
+    });
+    document.querySelector("#new_room").value = "";
+  };
+
+  socket.on("new room received", (room) => {
+    let createRoom = room.new_room_name;
+    const li = document.createElement("li");
+    li.innerHTML = createRoom;
+    li.setAttribute("class", "select-room cursor-pointer");
+    li.setAttribute("id", createRoom);
+
+    const roomsList = document.querySelector("#roomsList");
+    if (roomsList) {
+      roomsList.appendChild(li);
+      selectRoom();
+    } else {
+      console.error('The "rooms" container does not exist.');
+    }
+  });
+
+ 
+  document.querySelector("#delete_room").onclick = () => {
+    const confirmation = confirm("Are you sure you want to delete this room?");
+    if (confirmation) {
+      socket.emit("delete_room", { room_name: document.querySelector("#select_deleteroom").value,
+      });
+    }
+    document.querySelector("#select_deleteroom").value = "";
+  }
+
+  socket.on("room_deleted", (data) => {
+    const deletedRoom = data.room_name;
+    console.log(`Received room_deleted event for ${deletedRoom}`);
+  
+    // Remove the deleted room from the UI immediately
+    const roomElements = document.getElementsByClassName("select-room");
+    
+    for (const roomElement of roomElements) {
+      if (roomElement.textContent.trim() === deletedRoom) {
+        console.log(`Removing element for ${deletedRoom}`);
+        roomElement.remove();
+        break;  // Exit the loop once the element is found and removed
+      }
+    }
+  
+    console.log(`Room ${deletedRoom} has been deleted.`);
+  });
+  
+  socket.on('delete_room_error', function(data) {
+    alert(data.message);
+});
+
+document.querySelector("#edit_room").onclick = () => {
+  const confirmation = confirm("Are you sure you want to edit this room?");
+  if (confirmation) {
+    socket.emit("room_edited", { room_name: document.querySelector("#select_editroom").value,
+    });
+  }
+  
+}
+
+socket.on("room_edited", (data) => {
+  const editedRoom = data.room_name;
+  console.log(`Received room_deleted event for ${editedRoom}`);
+
+  // Remove the deleted room from the UI immediately
+  const roomElements = document.getElementsByClassName("select-room");
+  
+  for (const roomElement of roomElements) {
+    if (roomElement.textContent.trim() === editedRoom) {
+      const newName = prompt(`Enter a new name for ${editedRoom}:`);
+      console.log(`editing element for ${editedRoomtedRoom}`);
+      if (newName !== null) {
+        // Update the room name in the UI
+        roomElement.textContent = newName;
+        document.querySelector("#select_editroom").value = "";
+      }
+      break;  // Exit the loop once the element is found and removed
+      
+    }
+  }
+
+  console.log(`Room ${editedRoom} has been deleted.`);
+});
+
+socket.on('delete_room_error', function(data) {
+  alert(data.message);
+});
+
+  function leaveRoom(room) {
+    socket.emit("leave", { username: username, room: room });
+    document.querySelectorAll(".select-room").forEach((p) => {
+      p.style.color = "black";
+    });
+  }
+
+  function joinRoom(newRoom) {
+
+    socket.emit("join", { username: username, room: newRoom });
+    // Fetch messages for the current room
+    fetch(`/get_messages/${newRoom}`)
+        .then(response => response.json())
+        .then(data => {
+            // Process the fetched messages
+            data.messages.forEach(message => {
+                if (message.username === username) {
+                    appendmssg(message);
+                } else if (typeof message.username !== 'undefined') {
+                    appendother(message);
+                }
+            });
+        })
+        .catch(error => console.error('Error fetching messages:', error.message));
+
+    room = newRoom;
+    console.log(`Room ${newRoom} has been JOINED.`);
+
+    // Update the URL without triggering a page reload
+    //history.pushState(null, null, `/chat/${room}`);
+    console.log (`room ${room}`)
+    document.querySelector("#" + CSS.escape(room)).style.color = "#487B98";
+    document.querySelector("#" + CSS.escape(room)).style.backgroundColor =
+      "white";
+    document.querySelector("#display-message-section").innerHTML = "";
+    document.querySelector("#user_message").focus();
+  }
 
   function selectRoom() {
     document.querySelectorAll(".select-room").forEach((li) => {
@@ -152,53 +203,62 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  document.querySelector("#send_newRoom").onclick = () => {
-    socket.emit("new_room", {
-      new_room_name: document.querySelector("#new_room").value,
-    });
-  };
+  function appendmssg(data) {
 
-  socket.on("new room received", (room) => {
-    let createRoom = room.new_room_name;
-    const li = document.createElement("li");
-    li.innerHTML = createRoom;
-    li.setAttribute("class", "select-room cursor-pointer");
-    li.setAttribute("id", createRoom);
-  });
+    const p = document.createElement('p');
+    const span_username = document.createElement('span');
+    const span_timestamp = document.createElement('span');
+    const br = document.createElement('br')
+       
+    p.setAttribute("class", "my-msg");
 
-  document.querySelector("#logout-btn").onclick = () => {
-    leaveRoom(room);
-  };
+    // Username
+    span_username.setAttribute("class", "my-username");
+    span_username.innerText = data.username;
 
+    // Timestamp
+    span_timestamp.setAttribute("class", "timestamp");
+    span_timestamp.innerText = data.time_stamp;
 
+    // HTML to append
+    p.innerHTML += span_username.outerHTML + br.outerHTML + data.msg + br.outerHTML + span_timestamp.outerHTML
 
-  function leaveRoom(room) {
-    socket.emit("leave", { username: username, room: room });
-    document.querySelectorAll(".select-room").forEach((p) => {
-      p.style.color = "black";
-    });
+    //Append
+    document.querySelector('#display-message-section').append(p);
   }
 
-  function joinRoom(newRoom) {
-    socket.emit("join", { username: username, room: newRoom });
-    room = newRoom;
+  function appendother (data) {
+    const p = document.createElement('p');
+    const span_username = document.createElement('span');
+    const span_timestamp = document.createElement('span');
+    const br = document.createElement('br')
+    p.setAttribute("class", "others-msg");
 
-    // Update the URL without triggering a page reload
-    history.pushState(null, null, `/chat/${room}`);
+    // Username
+    span_username.setAttribute("class", "other-username");
+    span_username.innerText = data.username;
+
+    // Timestamp
+    span_timestamp.setAttribute("class", "timestamp");
+    span_timestamp.innerText = data.time_stamp;
+            
+    // Content of the message
+    //p.innerText = data.msg;
+
+    // HTML to append
+    p.innerHTML += span_username.outerHTML + br.outerHTML + data.msg + br.outerHTML + span_timestamp.outerHTML;
+
+    //Append
+    document.querySelector('#display-message-section').append(p);
     
-    document.querySelector("#" + CSS.escape(room)).style.color = "#487B98";
-    document.querySelector("#" + CSS.escape(room)).style.backgroundColor =
-      "white";
-    document.querySelector("#display-message-section").innerHTML = "";
-    document.querySelector("#user_message").focus();
   }
-
 
   function scrollDownChatWindow() {
     const chatWindow = document.querySelector("#display-message-section");
     chatWindow.scrollTop = chatWindow.scrollHeight;
   }
-
+   
+  
   function printSysMsg(msg) {
     const p = document.createElement("p");
     p.setAttribute("class", "system-msg");
