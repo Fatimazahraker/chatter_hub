@@ -43,3 +43,4 @@ class Message(db.Model):
     timestamp = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
     room_id = db.Column(db.Integer, db.ForeignKey('rooms.id'), nullable=False)
+    image_path = db.Column(db.String(255))  # Add this line to include the image path

@@ -1,7 +1,9 @@
+#!/usr/bin/env python3
+
 import secrets
 import os
 from time import localtime, strftime
-from flask import Flask, flash, render_template, request, redirect, url_for
+from flask import Flask,  current_app, flash, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from wtforms import ValidationError
 from flask_login import current_user, login_user, LoginManager, logout_user, login_required
@@ -13,6 +15,9 @@ from flask_migrate import Migrate
 from datetime import datetime
 from flask import abort
 from flask import jsonify
+from werkzeug.utils import secure_filename
+import base64
+import binascii
 
 """
 A simple Flask application for a chat system with user registration and login features.
@@ -194,36 +199,66 @@ def delete_room(room_name):
 
     return redirect(url_for('chat'))
 
+def save_image(image_data):
+    if image_data:
+        # Add padding to the base64-encoded image data if it's missing
+        padding = '=' * (len(image_data) % 4)
+        image_data += padding
+
+        # Decode base64-encoded image data
+        try:
+            image_binary = base64.b64decode(image_data)
+        except binascii.Error as e:
+            print(f"Error decoding base64 data: {e}")
+            return None
+
+        # Generate a unique filename (you might want to implement a more robust method)
+        filename = f"image_{secrets.token_hex(8)}.jpg"
+        
+        # Ensure the 'uploads' directory exists
+        os.makedirs('uploads', exist_ok=True)
+
+        # Save the image
+        with open(os.path.join('uploads', filename), 'wb') as f:
+            f.write(image_binary)
+
+        return os.path.join('uploads', filename)
+    else:
+        return None
+
+
+
+        
 @socketio.on('message')
 def message(data):
-    """
-    Handles incoming chat messages from users.
-
-    Args:
-    - data (dict): Dictionary containing message details (msg, username, room).
-
-    Emits:
-    - Sends the message to the specified chat room with additional details.
-    """
     user_id = current_user.id if current_user.is_authenticated else None
-    print(data)
-    print(f"room: {data['room']}")
-    # Check if the room exists
     roomi = Room.query.filter(Room.name.ilike(data['room'])).first()
 
-    print(f"Room ID: {roomi.id}, Name: {roomi.name}, Created by: {roomi.created_by}")
+    if 'image' in data:
+        # Handle image message
+        image_path = save_image(data['image'])
+        new_message = Message(content="", user_id=user_id, room_id=roomi.id, image_path=image_path)
+    else:
+        # Handle regular text message
+        new_message = Message(content=data['msg'], user_id=user_id, room_id=roomi.id)
 
-    print(f"message: {data['msg']}")
-
-    # Create a new Message object for a regular user message
-    new_message = Message(content=data['msg'], user_id=user_id, room_id=roomi.id)
-    print(f"Content: {new_message.content}, User ID: {new_message.user_id}, Room ID: {new_message.room_id}")
     db.session.add(new_message)
     db.session.commit()
 
-    # Broadcast the message to everyone in the room, including the sender
-    send({'msg': data['msg'], 'username': data['username'], 'time_stamp':
-        strftime('%X %x', localtime())}, room=data['room'])
+    # Send the image path or base64-encoded image data to the clients
+    if 'image' in data:
+        send({
+            'msg': data['msg'],
+            'username': data['username'],
+            'time_stamp': strftime('%X %x', localtime()),
+            'image': image_path  # Sending the image path or base64-encoded data
+        }, room=data['room'])
+    else:
+        send({
+            'msg': data['msg'],
+            'username': data['username'],
+            'time_stamp': strftime('%X %x', localtime())
+        }, room=data['room'])
 
 
 
@@ -302,4 +337,4 @@ def leave(data):
 
 
 if __name__ == "__main__":
-    socketio.run(app, debug=True, port=5000, host='0.0.0.0')
+    socketio.run(app, debug=True, port=5000, host='0.0.0.0') 

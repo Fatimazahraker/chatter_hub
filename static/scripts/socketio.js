@@ -20,34 +20,58 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     document.querySelector("#send_message").onclick = () => {
-    socket.emit("message", {
-      msg: document.querySelector("#user_message").value,
-      username: username,
-      room: room,
+      const messageInput = document.querySelector("#user_message");
+      const imageInput = document.querySelector("#image_upload");
+      const message = messageInput.value;
       
-    });
-    document.querySelector("#user_message").value = "";
-     
+      if (message || imageInput.files.length > 0) {
+          let data = { msg: message, username: username, room: room };
+          
+          // Check if an image is selected
+          if (imageInput.files.length > 0) {
+              const file = imageInput.files[0];
+              const reader = new FileReader();
+              
+              reader.onload = function (e) {
+                  data["image"] = e.target.result; // Add the image data to the data object
+                  socket.emit("message", data);
+              };
+              
+              reader.readAsDataURL(file); // Read the image file as a data URL
+          } else {
+              // If no image is selected, emit the message data without image
+              socket.emit("message", data);
+          }
+          
+          messageInput.value = "";
+          imageInput.value = ""; // Clear the file input
+      }
   };
+  
 
   socket.on('message', data => {
-
-    // Display current message
-    if (data.msg) {
-       // Display current messagehw
-      if (data.username == username) {
-        appendmssg(data);
-      }
-      // Display other users' messages
-      else if (typeof data.username !== 'undefined') {
-        appendother(data);
-      }
-      // Display system message
-      else {
-        printSysMsg(data.msg);
+    // Check if the message contains an image
+    if (data.image) {
+      // Handle displaying the image
+      appendImage(data);
+    } else {
+      // Display current message
+      if (data.msg) {
+        // Display current messagehw
+        if (data.username == username) {
+          appendmssg(data);
+        }
+        // Display other users' messages
+        else if (typeof data.username !== 'undefined') {
+          appendother(data);
+        }
+        // Display system message
+        else {
+          printSysMsg(data.msg);
+        }
       }
     }
-    scrollDownChatWindow();
+  scrollDownChatWindow();
 });
 
   
@@ -202,6 +226,42 @@ socket.on('delete_room_error', function(data) {
       };
     });
   }
+
+  function appendImage(data) {
+    console.log('Image data to dee :', data.image);
+    print('Image URL:', 'http://localhost:5000/' + data.image)
+    const p = document.createElement('p');
+    const img = document.createElement('img');
+    const span_username = document.createElement('span');
+    const span_timestamp = document.createElement('span');
+    const br = document.createElement('br');
+
+    p.setAttribute("class", "my-msg");
+
+    // Username
+    span_username.setAttribute("class", "my-username");
+    span_username.innerText = data.username;
+
+    // Timestamp
+    span_timestamp.setAttribute("class", "timestamp");
+    span_timestamp.innerText = data.time_stamp;
+
+    // Set image source directly
+    img.src = 'http://localhost:5000/' + data.image;
+    img.setAttribute("class", "uploaded-image");
+
+    // HTML to append
+    p.appendChild(span_username);
+    p.appendChild(br);
+    p.appendChild(img);
+    p.appendChild(br);
+    p.appendChild(span_timestamp);
+
+    // Append
+    document.querySelector('#display-message-section').append(p);
+}
+
+
 
   function appendmssg(data) {
 
