@@ -199,7 +199,7 @@ def delete_room(room_name):
 
     return redirect(url_for('chat'))
 
-def save_image(image_data):
+"""def save_image(image_data):
     if image_data:
         # Add padding to the base64-encoded image data if it's missing
         padding = '=' * (len(image_data) % 4)
@@ -224,7 +224,7 @@ def save_image(image_data):
 
         return os.path.join('uploads', filename)
     else:
-        return None
+        return None"""
 
 
 
@@ -232,26 +232,30 @@ def save_image(image_data):
 @socketio.on('message')
 def message(data):
     user_id = current_user.id if current_user.is_authenticated else None
+    print(f"Current User: {current_user}")
     roomi = Room.query.filter(Room.name.ilike(data['room'])).first()
 
     if 'image' in data:
         # Handle image message
-        image_path = save_image(data['image'])
-        new_message = Message(content="", user_id=user_id, room_id=roomi.id, image_path=image_path)
+        #image_path = save_image(data['image'])
+        image_data = base64.b64decode(data['image'])
+        image_size = len(image_data)
+        print(f"Image Size: {image_size} bytes")
+        new_message = Message(content="", user_id=user_id, room_id=roomi.id, image=image_data)
     else:
         # Handle regular text message
         new_message = Message(content=data['msg'], user_id=user_id, room_id=roomi.id)
 
     db.session.add(new_message)
     db.session.commit()
-
+    messages = Message.query.all()
     # Send the image path or base64-encoded image data to the clients
     if 'image' in data:
         send({
             'msg': data['msg'],
             'username': data['username'],
             'time_stamp': strftime('%X %x', localtime()),
-            'image': image_path  # Sending the image path or base64-encoded data
+            'image': data['image']  # Sending the image path or base64-encoded data
         }, room=data['room'])
     else:
         send({

@@ -190,9 +190,17 @@ socket.on('delete_room_error', function(data) {
             // Process the fetched messages
             data.messages.forEach(message => {
                 if (message.username === username) {
-                    appendmssg(message);
+                  if (message.image) {
+                    appendImage(message);
+                   } else {
+                      appendmssg(message);
+                    }
                 } else if (typeof message.username !== 'undefined') {
+                  if (message.image) {
+                    appendImage(message);
+                  } else {
                     appendother(message);
+                  }   
                 }
             });
         })
@@ -247,8 +255,12 @@ socket.on('delete_room_error', function(data) {
     span_timestamp.innerText = data.time_stamp;
 
     // Set image source directly
-    img.src = 'http://localhost:5000/' + data.image;
+    img.src = data.image; 
     img.setAttribute("class", "uploaded-image");
+
+    // Set the maximum width and height for the displayed image
+    img.style.maxWidth = "100%";
+    img.style.maxHeight = "300px";  // You can adjust this value based on your requirements
 
     // HTML to append
     p.appendChild(span_username);
