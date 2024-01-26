@@ -189,6 +189,7 @@ socket.on('delete_room_error', function(data) {
         .then(data => {
             // Process the fetched messages
             data.messages.forEach(message => {
+              console.log('Message Image:', message.image);
                 if (message.username === username) {
                   if (message.image) {
                     appendImage(message);
@@ -237,7 +238,7 @@ socket.on('delete_room_error', function(data) {
 
   function appendImage(data) {
     console.log('Image data to dee :', data.image);
-    print('Image URL:', 'http://localhost:5000/' + data.image)
+   
     const p = document.createElement('p');
     const img = document.createElement('img');
     const span_username = document.createElement('span');

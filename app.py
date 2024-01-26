@@ -155,9 +155,25 @@ def get_messages(room):
         abort(404)  # Room not found
 
     messages = Message.query.filter_by(room_id=room_obj.id).order_by(Message.timestamp).all()
-    messages_data = [{'msg': message.content, 'username': message.author.username, 'time_stamp': message.timestamp} for message in messages]
+    messages_data = []
+
+    for message in messages:
+        if message.image:
+            image_data = 'data:image/jpeg;base64,' + base64.b64encode(message.image).decode('utf-8')
+        else:
+            image_data = None
+        message_data = {
+                'msg': message.content,
+                'username': message.author.username,
+                'time_stamp': message.timestamp,
+                'image':image_data,
+            }
+
+        messages_data.append(message_data)
 
     return jsonify({'messages': messages_data})
+
+
 
 
 @app.route("/chat", methods=['GET', 'POST'])
