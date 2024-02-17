@@ -89,20 +89,31 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   socket.on("new room received", (room) => {
-    let createRoom = room.new_room_name;
-    const li = document.createElement("li");
-    li.innerHTML = createRoom;
-    li.setAttribute("class", "select-room cursor-pointer");
-    li.setAttribute("id", createRoom);
+    let createRoom = room.new_room_name.trim(); // Trim any leading or trailing whitespace
+    
+    // Create a div to contain the list item
+    const roomContainer = document.createElement("div");
+    roomContainer.classList.add("room-container");
 
+    // Create the list item
+    const li = document.createElement("li");
+    li.textContent = createRoom; // Use textContent to set the text content
+    li.classList.add("select-room", "cursor-pointer"); // Add classes using classList.add
+    li.id = createRoom; // Set the id directly
+
+    // Append the list item to the div
+    roomContainer.appendChild(li);
+
+    // Append the div to the rooms list
     const roomsList = document.querySelector("#roomsList");
     if (roomsList) {
-      roomsList.appendChild(li);
-      selectRoom();
+        roomsList.appendChild(roomContainer);
+        selectRoom();
     } else {
-      console.error('The "rooms" container does not exist.');
+        console.error('The "rooms" container does not exist.');
     }
-  });
+});
+
 
  
   document.querySelector("#delete_room").onclick = () => {
@@ -116,7 +127,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   socket.on("room_deleted", (data) => {
     const deletedRoom = data.room_name;
-    console.log(`Received room_deleted event for ${deletedRoom}`);
   
     // Remove the deleted room from the UI immediately
     const roomElements = document.getElementsByClassName("select-room");
@@ -129,47 +139,20 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
   
-    console.log(`Room ${deletedRoom} has been deleted.`);
   });
   
   socket.on('delete_room_error', function(data) {
     alert(data.message);
 });
 
-document.querySelector("#edit_room").onclick = () => {
-  const confirmation = confirm("Are you sure you want to edit this room?");
-  if (confirmation) {
-    socket.emit("room_edited", { room_name: document.querySelector("#select_editroom").value,
-    });
-  }
-  
-}
-
-socket.on("room_edited", (data) => {
-  const editedRoom = data.room_name;
-  console.log(`Received room_deleted event for ${editedRoom}`);
-
-  // Remove the deleted room from the UI immediately
-  const roomElements = document.getElementsByClassName("select-room");
-  
-  for (const roomElement of roomElements) {
-    if (roomElement.textContent.trim() === editedRoom) {
-      const newName = prompt(`Enter a new name for ${editedRoom}:`);
-      console.log(`editing element for ${editedRoomtedRoom}`);
-      if (newName !== null) {
-        // Update the room name in the UI
-        roomElement.textContent = newName;
-        document.querySelector("#select_editroom").value = "";
-      }
-      break;  // Exit the loop once the element is found and removed
-      
-    }
-  }
-
-  console.log(`Room ${editedRoom} has been deleted.`);
+socket.on('delete_room_error', function(data) {
+  alert(data.message);
 });
 
-socket.on('delete_room_error', function(data) {
+
+
+
+socket.on('new room error', function(data) {
   alert(data.message);
 });
 
@@ -189,7 +172,7 @@ socket.on('delete_room_error', function(data) {
         .then(data => {
             // Process the fetched messages
             data.messages.forEach(message => {
-              console.log('Message Image:', message.image);
+              
                 if (message.username === username) {
                   if (message.image) {
                     appendImage(message);
@@ -212,7 +195,7 @@ socket.on('delete_room_error', function(data) {
 
     // Update the URL without triggering a page reload
     //history.pushState(null, null, `/chat/${room}`);
-    console.log (`room ${room}`)
+    
     document.querySelector("#" + CSS.escape(room)).style.color = "#487B98";
     document.querySelector("#" + CSS.escape(room)).style.backgroundColor =
       "white";
@@ -237,7 +220,7 @@ socket.on('delete_room_error', function(data) {
   }
 
   function appendImage(data) {
-    console.log('Image data to dee :', data.image);
+   
    
     const p = document.createElement('p');
     const img = document.createElement('img');
@@ -261,7 +244,7 @@ socket.on('delete_room_error', function(data) {
 
     // Set the maximum width and height for the displayed image
     img.style.maxWidth = "100%";
-    img.style.maxHeight = "300px";  // You can adjust this value based on your requirements
+    img.style.maxHeight = "2000px";  // You can adjust this value based on your requirements
 
     // HTML to append
     p.appendChild(span_username);

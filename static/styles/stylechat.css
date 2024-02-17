@@ -150,21 +150,56 @@ input[type=text]:focus{
 #get-username {
     display: none !important;
 }
-/* Add these styles to your existing CSS file or create a new one */
+#user_message {
+    flex: 3;
+    margin-right: 10px;
+    resize: vertical; /* Allow vertical resizing of the textarea */
+}
+.imageicon {
+    font-size: 30px;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 100%;
 
-/* Default styles for the emoji selector */
+}
+#image_upload {
+    flex: 1;
+    margin-right: 10px;
+    margin-left: 10px;
+    cursor: pointer;
+}
+.utility-group {
+    display: flex;
+    align-items: center;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    margin-left: 10px;
+    margin-right: 10px;
+    position: relative;
+}
+
+
 ul li.emoji-selector {
     display: none; /* Hide the emoji selector by default */
-    position: relative; /* Add relative positioning */
-    border: 1px solid #ccc; /* Add a border around the emoji selector */
-    border-radius: 5px; /* Add border-radius for rounded corners */
-    padding: 10px; /* Add padding for spacing */
+    //*border: 1px solid #e00c0c; /* Add a border around the emoji selector */
+    //*border-radius: 5px; /* Add border-radius for rounded corners */
+    //*padding: 10px; /* Add padding for spacing */
     box-sizing: border-box; /* Include padding and border in the total width and height */
+
 }
+
 
 /* Styles for the emoji selector when it's active */
 ul li.emoji-selector.active {
     display: block; /* Show the emoji selector when active */
+    /*transform: translateY(-200px);*/
+    position: absolute;
+    bottom: 0;
+    right: 50px;
+    height: 250px;
+    width: 250px;
 }
 
 /* Style for the emoji list container */
@@ -174,9 +209,7 @@ ul li.emoji-selector ul.emoji-list {
     margin: 0;
     max-height: 200px; /* Adjust the max height as needed */
     overflow-y: auto;
-    position: absolute; /* Position the emoji list absolutely */
-    top: calc(100% - 10px); /* Align the top of the list above the input container */
-    left: 0; /* Align the list with the left side of the input container */
+     /* Align the list with the left side of the input container */
     width: 100%; /* Make the list width match the input container */
     background-color: white;
     border: 1px solid #ccc;
@@ -195,7 +228,14 @@ ul li.emoji-selector ul.emoji-list li {
 
 /* Style for the search input */
 ul li.emoji-selector .input-container {
-    margin-bottom: 10px;
+    padding-bottom: 10px;
+    background-color: #ecf0f5;
+    border-radius: 50px 50px 0px 0px;
+}
+
+#emojiSelectorIcon {
+    font-size: 28px; /* Adjust the font size as needed */
+    cursor: pointer;
 }
 
 /* Style for the search input field */
@@ -208,3 +248,49 @@ ul li.emoji-selector .input-container input {
     outline: none;
     cursor: text; /* Set cursor to text for better indication */
 }
+
+
+/* Style for room container */
+.room-container {
+    font-style: 1em;
+    list-style-type: none;
+}
+
+
+/* Style for room items on hover */
+#roomsList li:hover {
+    background-color: #d5a8de;
+     /* Change background color on hover */
+}
+
+#roomsList li {
+    font-style: 1em;
+    list-style-type: none;
+}
+
+/* Style for newly added room */
+#roomsList li#{{ room.name }} {
+    font-style: 1em;
+    list-style-type: none;
+}
+#show_create_input,
+#show_delete_input {
+    background-color: #d5a8de; 
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 50%;
+}
+
+#show_create_input:hover,
+#show_delete_input:hover {
+    background-color: #d5a8de; 
+}
+ 
+

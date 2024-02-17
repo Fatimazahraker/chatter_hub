@@ -1,6 +1,6 @@
 import secrets
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, BooleanField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, FileField
 from wtforms.validators import InputRequired, Length, EqualTo, ValidationError, DataRequired, Email
 
 from models import User

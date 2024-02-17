@@ -56,26 +56,26 @@
                 <nav id="sidebar">
                     <div>
                         <div id="createroom">
-                            <input type="text" id="new_room" placeholder="Type here..." autocomplete="off"> 
-                            <button type="button" id="send_newRoom">create room</button>
+                            <button type="button" id="show_create_input">+</button>
+                            <div id="create_input_wrapper" style="display: none;">
+                                <input type="text" id="new_room" placeholder="Type here..." autocomplete="off"> 
+                                <button type="button" id="send_newRoom">Create</button>
+                            </div>
                         </div>
                         <div id="deleteroom">
-                            <input type="text" id="select_deleteroom" placeholder="Type here room to delete..." autocomplete="off"> 
-                            <button type="button" id="delete_room">delete room</button>
+                            <button type="button" id="show_delete_input">-</button>
+                            <div id="delete_input_wrapper" style="display: none;">
+                                <input type="text" id="select_deleteroom" placeholder="Type here room to delete..." autocomplete="off"> 
+                                <button type="button" id="delete_room">Delete</button>
+                            </div>
                         </div>
-
-                        <div id="editroom">
-                            <input type="text" id="select_editroom" placeholder="Type here room to edit..." autocomplete="off"> 
-                            <button type="button" id="edit_room">edit room</button>
-                        </div>
-                    
+                
                         <h4>Rooms</h4>
                         <ul id="roomsList">
                             {% for room in rooms %}
-                                <li id="{{ room.name|title }}" class="select-room cursor-pointer">{{ room.name|title }}</li>
-                                
-                                {% endfor %}
-                    </ul>
+                                <li id="{{ room.name }}" class="select-room cursor-pointer">{{ room.name }}</li>
+                            {% endfor %}
+                        </ul>
                     </div>
                 </nav>
                 <!-- Sidebar end --> 
@@ -108,7 +108,12 @@
                     <!-- Type message start -->
                    <div id="input-area" class="input-group mb-3">
                         <input type="text" id="user_message" class="form-control" placeholder="Type here..." aria-label="Type a message" aria-describedby="basic-addon2" autocomplete="off">
-                        <input type="file" id="image_upload" accept="image/*">
+                        <label for="image_upload" class="image-upload-label bigger-icon">
+                            <div class="imageicon">
+                                    <i class="fas fa-image" ></i> <!-- Image icon -->
+                            </div>
+                            <input type="file" id="image_upload" accept="image/*" style="display: none;">
+                        </label>
                         <div>
                             <ul class="utility-group">
                                 <li class="emoji-selector" id="emojiSelector">

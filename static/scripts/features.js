@@ -44,5 +44,21 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-    
+  document.getElementById("show_create_input").addEventListener("click", function() {
+    var createInputWrapper = document.getElementById("create_input_wrapper");
+    if (createInputWrapper.style.display === "none") {
+        createInputWrapper.style.display = "block";
+    } else {
+        createInputWrapper.style.display = "none";
+    }
+});
+
+document.getElementById("show_delete_input").addEventListener("click", function() {
+    var deleteInputWrapper = document.getElementById("delete_input_wrapper");
+    if (deleteInputWrapper.style.display === "none") {
+        deleteInputWrapper.style.display = "block";
+    } else {
+        deleteInputWrapper.style.display = "none";
+    }
+});
 });

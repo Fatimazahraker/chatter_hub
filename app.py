@@ -19,31 +19,13 @@ from werkzeug.utils import secure_filename
 import base64
 import binascii
 
-"""
-A simple Flask application for a chat system with user registration and login features.
 
-Modules:
-- secrets: Generate cryptographically strong pseudo-random numbers suitable for managing secrets.
-- os: Provides a way of using operating system-dependent functionality.
-- time: Provides various time-related functions.
-- Flask: A web framework for building web applications in Python.
-- flask_sqlalchemy: Flask extension for SQLAlchemy, a SQL toolkit and Object-Relational Mapping (ORM) library.
-- flask_login: Flask extension for managing user authentication.
-- wtfform_field: Custom form fields (assuming it's a module in your project).
-- models: Contains the User model for database interactions.
-- flask_socketio: Flask extension for Socket.IO, a real-time communication library.
+os.environ["DB_USERNAME"] = "chatapp"
+os.environ["DB_PASSWORD"] = "noor"
+os.environ["DB_NAME"] = "chatapp"
+os.environ["DB_EMAIL"] = "eza90782@gmail.com"
+os.environ["DB_EMAIL_PASSWD"] = "qzjq vsmg fcyj hipb"
 
-Routes:
-- /: Home page, handles user registration.
-- /login: Login page.
-- /logout: Logout route.
-- /chat: Chat page, requires authentication.
-
-Socket.IO Events:
-- message: Handles incoming chat messages.
-- join: Handles user joining a chat room.
-- leave: Handles user leaving a chat room.
-"""
 
 db_username = os.environ.get('DB_USERNAME', 'default_username')
 db_password = os.environ.get('DB_PASSWORD', 'default_password')
@@ -79,13 +61,7 @@ def verify_email_token(receiver_email, receiver_token):
 
 @app.route("/index", methods=['GET', 'POST'], strict_slashes=False)
 def index():
-    """
-    Handles the home page for user registration.
-
-    Returns:
-    - GET: Renders the registration form.
-    - POST: Processes the form data, registers the user, and redirects to the login page.
-    """
+   
     reg_form = RegistrationForm()
 
     if reg_form.validate_on_submit():
@@ -109,13 +85,7 @@ def index():
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
-    """
-    Handles the login page.
 
-    Returns:
-    - GET: Renders the login form.
-    - POST: Processes the form data, logs in the user, and redirects to the chat page.
-    """
     if current_user.is_authenticated:
         return redirect(url_for('login'))
     form = LoginForm()
@@ -131,12 +101,7 @@ def login():
 
 @app.route("/logout", methods=['GET'])
 def logout():
-    """
-    Logs out the current user and redirects to the login page.
 
-    Returns:
-    - GET: Redirects to the login page after logging out.
-    """
     logout_user()
     flash('You have logged out successfully', 'success')
     return redirect(url_for('login'))
@@ -158,33 +123,26 @@ def get_messages(room):
     messages_data = []
 
     for message in messages:
-        if message.image:
-            image_data = 'data:image/jpeg;base64,' + base64.b64encode(message.image).decode('utf-8')
-        else:
-            image_data = None
+        image_data = message.image
+        if image_data:
+            image_data = base64.b64decode(image_data).decode('utf-8')
         message_data = {
-                'msg': message.content,
-                'username': message.author.username,
-                'time_stamp': message.timestamp,
-                'image':image_data,
-            }
+            'msg': message.content,
+            'username': message.author.username,
+            'time_stamp': message.timestamp,
+            'image': image_data
+        }
 
         messages_data.append(message_data)
 
     return jsonify({'messages': messages_data})
 
-
+   
 
 
 @app.route("/chat", methods=['GET', 'POST'])
 def chat():
-    """
-    Handles the chat page.
-
-    Returns:
-    - GET: Renders the chat page if the user is authenticated, otherwise redirects to the login page.
-    - POST: Not used in the current implementation.
-    """
+ 
     if not current_user.is_authenticated:
         return redirect(url_for('login'))
 
@@ -215,70 +173,32 @@ def delete_room(room_name):
 
     return redirect(url_for('chat'))
 
-"""def save_image(image_data):
-    if image_data:
-        # Add padding to the base64-encoded image data if it's missing
-        padding = '=' * (len(image_data) % 4)
-        image_data += padding
-
-        # Decode base64-encoded image data
-        try:
-            image_binary = base64.b64decode(image_data)
-        except binascii.Error as e:
-            print(f"Error decoding base64 data: {e}")
-            return None
-
-        # Generate a unique filename (you might want to implement a more robust method)
-        filename = f"image_{secrets.token_hex(8)}.jpg"
-        
-        # Ensure the 'uploads' directory exists
-        os.makedirs('uploads', exist_ok=True)
-
-        # Save the image
-        with open(os.path.join('uploads', filename), 'wb') as f:
-            f.write(image_binary)
-
-        return os.path.join('uploads', filename)
-    else:
-        return None"""
-
-
-
-        
+    
 @socketio.on('message')
 def message(data):
     user_id = current_user.id if current_user.is_authenticated else None
-    print(f"Current User: {current_user}")
     roomi = Room.query.filter(Room.name.ilike(data['room'])).first()
+    print(data)
+
+    if data['msg'] is None:
+        return
 
     if 'image' in data:
-        # Handle image message
-        #image_path = save_image(data['image'])
-        image_data = base64.b64decode(data['image'])
-        image_size = len(image_data)
-        print(f"Image Size: {image_size} bytes")
-        new_message = Message(content="", user_id=user_id, room_id=roomi.id, image=image_data)
+        image_data = base64.b64encode(data['image'].encode('utf-8'))
     else:
-        # Handle regular text message
-        new_message = Message(content=data['msg'], user_id=user_id, room_id=roomi.id)
+        image_data = None
+    new_message = Message(content=data['msg'], user_id=user_id, room_id=roomi.id, image=image_data)
 
     db.session.add(new_message)
     db.session.commit()
-    messages = Message.query.all()
-    # Send the image path or base64-encoded image data to the clients
-    if 'image' in data:
-        send({
-            'msg': data['msg'],
-            'username': data['username'],
-            'time_stamp': strftime('%X %x', localtime()),
-            'image': data['image']  # Sending the image path or base64-encoded data
-        }, room=data['room'])
-    else:
-        send({
-            'msg': data['msg'],
-            'username': data['username'],
-            'time_stamp': strftime('%X %x', localtime())
-        }, room=data['room'])
+
+    send({
+        'msg': data['msg'],
+        'username': data['username'],
+        #'profile': data['profile'],
+        'time_stamp': strftime('%X %x', localtime()),
+        'image': data['image'] if 'image' in data else None
+    }, room=data['room'])
 
 
 
@@ -294,20 +214,29 @@ def join(data):
 
 @socketio.on('new_room')
 def new_room(data):
-    room_name = data["new_room_name"]
-    existing_room = Room.query.filter_by(name=room_name).first()
-    if not existing_room:
-        # Create a new Room object
-        new_room = Room(name=room_name, created_by=current_user.id)
-        db.session.add(new_room)
+    room_name = data.get("new_room_name", "").strip()  # Get room name from data and remove leading/trailing spaces
 
-        db.session.commit()
+    # Check if the room name is empty
+    if not room_name:
+        emit('new room error', {'message': 'Room name cannot be empty'})
+        return
 
-        # Join the new room
-        join_room(new_room.name)
+    # Check if the room already exists in the database
+    existing_room = Room.query.filter(Room.name.ilike(room_name)).first()
+    if existing_room:
+        emit('new room error', {'message': 'Room already exists'})
+        return
 
-        # Emit an event to inform clients about the new room
-        emit('new room received', {'new_room_name': new_room.name, 'created_by': new_room.created_by}, broadcast=True)
+    # Create a new Room object
+    new_room = Room(name=room_name, created_by=current_user.id)
+    db.session.add(new_room)
+    db.session.commit()
+
+    # Join the new room
+    join_room(new_room.name)
+
+    # Emit an event to inform clients about the new room
+    emit('new room received', {'new_room_name': new_room.name, 'created_by': new_room.created_by}, broadcast=True)
 
 @socketio.on('delete_room')
 def delete_room(data):
@@ -321,37 +250,15 @@ def delete_room(data):
 
         # Broadcast the deletion event to inform clients
         emit('room_deleted', {'room_name': room_name}, broadcast=True)
-        print(f"Emitted room_deleted event for {room_name}")
     else:
         emit('delete_room_error', {'message': 'You can\'t delete this room. Only the admin has access'})
-        print(f"Room not found or not deleted for {room_name}")
+        
 
-@socketio.on('edit_room')
-def edit_room(data):
-    room_name = data['room_name'].strip()
-    new_room_name = data['new_room_name'].strip()
-    room = Room.query.filter(Room.name.ilike(room_name)).first()
 
-    if room and room.created_by == current_user.id:
-        # Perform the room editing logic
-        room.name = new_room_name
-        db.session.commit()
-
-        # Broadcast the edited event to inform clients
-        emit('room_edited', {'old_room_name': room_name, 'new_room_name': new_room_name}, broadcast=True)
-        print(f"Emitted room_edited event for {room_name} to {new_room_name}")
-    else:
-        # Emit an event to request confirmation from the client
-        emit('error_edit_room', {'room_name': room_name, 'new_room_name': new_room_name})
 
 @socketio.on('leave')
 def leave(data):
-    """
-    Handles a user leaving a chat room.
-
-    Args:
-    - data (dict): Dictionary containing user and room details.
-    """
+  
     leave_room(data['room'])
     send({'msg': data['username'] + " has left the " + data['room'] + " room."}, room=data['room'])
 
