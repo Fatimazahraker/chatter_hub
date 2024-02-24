@@ -67,6 +67,7 @@
     min-height: 82vh;
     max-height: 82vh;
     overflow-y: auto; /*Make  this section scrolable */
+    background-color: rgb(248, 241, 241);
 }
 
 #input-area {
@@ -101,10 +102,10 @@ input[type=text]:focus{
 }
 
 .my-msg {
-    background-color: #d5a8de;
+    background-color: #E7D8EA ;
     color: #000000; /* Set text color to white */
     background-image: #487B98;
-    border-radius: 10px;
+    border-radius: 20px;
     font-size: 14px;
     padding: 5px 10px 5px 12px;
     box-shadow: rgb(0 0 0 / 25%) 0px 2px 5px 2px;
@@ -259,7 +260,7 @@ ul li.emoji-selector .input-container input {
 
 /* Style for room items on hover */
 #roomsList li:hover {
-    background-color: #d5a8de;
+    background-color: #E7D8EA ;
      /* Change background color on hover */
 }
 
@@ -268,29 +269,73 @@ ul li.emoji-selector .input-container input {
     list-style-type: none;
 }
 
-/* Style for newly added room */
-#roomsList li#{{ room.name }} {
-    font-style: 1em;
-    list-style-type: none;
-}
-#show_create_input,
-#show_delete_input {
-    background-color: #d5a8de; 
-    border: none;
-    color: white;
-    padding: 10px 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
+.popup {
+    display: none;
+    position: fixed;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #487B98;
+    padding: 10px;
+    
+  }
+  
+  .popup-content {
+    position: relative;
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    height: 400px;
+    width: 600px;
+    
+  }
+  
+  .close-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
     cursor: pointer;
-    border-radius: 50%;
+  }
+ #creadelete {
+    border: none; /* Remove border */
+    color: #335177; /* Set text color to white */
+    background-color: #E7D8EA ; /* Set background color to green */
+    cursor: pointer;
+ }
+ label {
+    display: block;
+    color: #487B98; /* Setting label color to green */
+    margin-bottom: 5px; /* Adding some space below label */
 }
+button {
 
-#show_create_input:hover,
-#show_delete_input:hover {
-    background-color: #d5a8de; 
+    background-color: #E7D8EA; /* Setting button background color to red */
+    color: #335177; /* Setting button text color to white */
+    padding: 7px 10px;
+    border: none;
+    cursor: pointer;
 }
- 
-
+input[type="text"] {
+    width: 80%;
+    padding: 5px;
+    margin-bottom: 10px; /* Adding some space below input */
+}
+h2 {
+    margin-bottom: 40px;
+    color: #487B98;
+    font-family: Inter;
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: #E7D8EA;;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

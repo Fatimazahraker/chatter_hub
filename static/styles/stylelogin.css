@@ -4,7 +4,7 @@ body {
 }
 
 .tilte-chat h2 {
-    color: #d5a8de;
+    color: #E7D8EA ;
     font-family: Inter;
     font-size: 16px;
     font-style: normal;
@@ -27,7 +27,7 @@ form {
 }
 
 .purple-link {
-    color: #d5a8de;
+    color: #098b4e ;
 }
 
 #link-login {
@@ -59,7 +59,7 @@ form {
 .user-action label {
     display: block;
     text-align: left;
-    color: #d5a8de;
+    color: #E7D8EA ;
     font-family: Inter;
     font-size: 12px;
     font-style: normal;

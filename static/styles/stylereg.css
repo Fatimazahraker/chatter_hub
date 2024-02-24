@@ -3,7 +3,7 @@ body {
     margin:0 20px; 
 }
 h2 {
-    color: #d5a8de;
+    color: #487B98 ;
     font-family: Inter;
     font-size: 16px;
     font-style: normal;
@@ -26,7 +26,7 @@ form {
 }
 
 .purple-link {
-    color: #d5a8de;
+    color: #487B98 ;
 }
 #link-login {
     text-align: left;
@@ -76,14 +76,14 @@ form {
 .error {
     text-align: center;
     background-color: #487B98;/* Red color */
-    color: #d5a8de; /* White text color */
+    color: #E7D8EA ; /* White text color */
     padding: 10px;
     border-radius: 10px; /* Adjust the border-radius as needed */
     margin-top: 10px;
 }
 .closebtn {
     margin-left: 15px;
-    color: #d5a8de;
+    color: #E7D8EA ;
     font-weight: bold;
     float: right;
     font-size: 22px;

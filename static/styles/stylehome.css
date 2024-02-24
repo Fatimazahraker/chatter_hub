@@ -1,28 +1,23 @@
 body {
-    background: #FFF;
-    margin:0 20px;
+    background: #E7D8EA;
     padding: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
-    height: 100vh;lay: flex;
+    height: 100vh;
     
 }
 #icon-container {
     margin-top: 20%;
 
 }
-#icon-container,
-#welcome-message,
-#button-container {
-    margin: 30px;
-}
+
 #home-chat-container {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 100%;
+    height: 100px;
 }
 
 #home-chat {
@@ -33,18 +28,19 @@ body {
 .button {
     background-color: #EFD7ED;
     color: #487B98;
-    font-family: Inter;
+    font-family: Inter;s
     font-size: 18px;
     font-style: normal;
-    font-weight: 400;
+    font-weight: 500;
     line-height: normal;
-    text-align: center;
     padding-top: 5px;
     margin-top: 20px;
     border-radius: 20px;
     text-decoration-line: none;
-    width: 350px;
-    height: 60px;
+    display: flex;
+    justify-content: center;
+    margin-left: 40px;
+
 }
 
 #welcome-message {
@@ -57,9 +53,34 @@ body {
     width: 299px;
     height: 97px;
     flex-shrink: 0;
+    margin-left: 90px;
 }
 @media (max-width: 768px) {
     form {
         width: 90%; /* Adjust the width for smaller screens */
     }
+}
+form {
+    width: 500px;s
+    height: 500px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #FFFFFF;
+    padding: 10px;
+    display: inline-block;
+    text-align: center;
+
+}
+div#button-container {
+    margin-left: 90px;
+
+}
+#icon-container,
+#home-chat-container,
+#welcome-message,
+#button-container {
+    margin-bottom: 100px; /* Add space between elements */
+    
 }
